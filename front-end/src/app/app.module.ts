@@ -17,9 +17,24 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DialogCreateComponent } from './crud-contact/dialog-create/dialog-create.component';
 import { DialogEditComponent } from './crud-contact/dialog-edit/dialog-edit.component';
 import { DialogDeleteComponent } from './crud-contact/dialog-delete/dialog-delete.component';
+import { SalesOrderComponent } from './sales-order/sales-order.component';
+import { DialogCreateSalesorderComponent } from './crud-salesorder/dialog-create-salesorder/dialog-create-salesorder.component';
+import { DialogEditSalesorderComponent } from './crud-salesorder/dialog-edit-salesorder/dialog-edit-salesorder.component';
+import { DialogDeleteSalesorderComponent } from './crud-salesorder/dialog-delete-salesorder/dialog-delete-salesorder.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, ContactComponent, DialogCreateComponent, DialogEditComponent, DialogDeleteComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    ContactComponent,
+    DialogCreateComponent,
+    DialogEditComponent,
+    DialogDeleteComponent,
+    SalesOrderComponent,
+    DialogCreateSalesorderComponent,
+    DialogEditSalesorderComponent,
+    DialogDeleteSalesorderComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
