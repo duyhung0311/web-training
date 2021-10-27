@@ -1,64 +1,47 @@
 <div style="width: 100%">
-  <h2 mat-dialog-title>Create Sales Order</h2>
+  <h2 mat-dialog-title>Create User</h2>
   <mat-dialog-content class="mat-typography">
     <div style="display: block; width: 50vw">
       <!-- Row 1 : Contact subject and contactName -->
       <div style="display: flex; width: 100%">
         <div style="width: 100%">
-          <h3>Subject</h3>
+          <h3>Name</h3>
           <mat-form-field appearance="fill" style="width: 100%">
-            <mat-label>Subject</mat-label>
+            <mat-label>Name</mat-label>
             <input matInput />
           </mat-form-field>
         </div>
         <div style="margin-left: 10px; width: 100%">
-          <h3>Contact Name</h3>
+          <h3>Username</h3>
           <mat-form-field appearance="fill" style="width: 100%">
-            <mat-label>Contact Name</mat-label>
+            <mat-label>Username</mat-label>
             <input matInput />
           </mat-form-field>
         </div>
       </div>
-      <!-- Row 2 status and total -->
+      <!-- Row 2 password and email -->
       <div style="display: flex; width: 100%">
         <div style="width: 100%">
-          <h3>Status</h3>
+          <h3>Password</h3>
           <mat-form-field appearance="fill" style="width: 100%">
-            <mat-label>Status</mat-label>
-            <input type="number" matInput />
+            <mat-label>Password</mat-label>
+            <input type="password" matInput />
           </mat-form-field>
         </div>
         <div style="width: 100%; margin-left: 10px">
-          <h3>Total</h3>
+          <h3>Email</h3>
           <mat-form-field appearance="fill" style="width: 100%">
-            <mat-label>Total</mat-label>
-            <input matInput type="number" />
-          </mat-form-field>
-        </div>
-      </div>
-      <!-- Row 3 assigned to and creator -->
-      <div style="display: flex; width: 100%">
-        <div style="width: 100%">
-          <h3>Assigned To</h3>
-          <mat-form-field appearance="fill" style="width: 100%">
-            <mat-label>Assigned To</mat-label>
-            <input matInput />
-          </mat-form-field>
-        </div>
-        <div style="width: 100%; margin-left: 10px">
-          <h3>Creator</h3>
-          <mat-form-field appearance="fill" style="width: 100%">
-            <mat-label>Creator</mat-label>
-            <input matInput />
+            <mat-label>Email</mat-label>
+            <input matInput type="email" />
           </mat-form-field>
         </div>
       </div>
       <!-- Last row description -->
       <div style="width: 100%">
-        <h3>Description</h3>
-        <mat-form-field appearance="fill" style="width: 100%">
-          <mat-label>Description</mat-label>
-          <input matInput />
+        <h3>Phone</h3>
+        <mat-form-field appearance="fill" style="width: 50%">
+          <mat-label>Phone</mat-label>
+          <input matInput type="number" />
         </mat-form-field>
       </div>
     </div>
@@ -66,5 +49,5 @@
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>No</button>
     <button mat-raised-button [mat-dialog-close]="true" color="primary" cdkFocusInitial>Yes</button>
-  </mat-dialog-actions>A=
+  </mat-dialog-actions>
 </div>
