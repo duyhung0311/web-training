@@ -21,6 +21,10 @@ import { SalesOrderComponent } from './sales-order/sales-order.component';
 import { DialogCreateSalesorderComponent } from './crud-salesorder/dialog-create-salesorder/dialog-create-salesorder.component';
 import { DialogEditSalesorderComponent } from './crud-salesorder/dialog-edit-salesorder/dialog-edit-salesorder.component';
 import { DialogDeleteSalesorderComponent } from './crud-salesorder/dialog-delete-salesorder/dialog-delete-salesorder.component';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { DialogCreateUsermanagementComponent } from './crud-usermanagement/dialog-create-usermanagement/dialog-create-usermanagement.component';
+import { DialogEditUsermanagementComponent } from './crud-usermanagement/dialog-edit-usermanagement/dialog-edit-usermanagement.component';
+import { DialogDeleteUsermanagementComponent } from './crud-usermanagement/dialog-delete-usermanagement/dialog-delete-usermanagement.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +38,10 @@ import { DialogDeleteSalesorderComponent } from './crud-salesorder/dialog-delete
     DialogCreateSalesorderComponent,
     DialogEditSalesorderComponent,
     DialogDeleteSalesorderComponent,
+    UserManagementComponent,
+    DialogCreateUsermanagementComponent,
+    DialogEditUsermanagementComponent,
+    DialogDeleteUsermanagementComponent,
   ],
   imports: [
     BrowserModule,
