@@ -1,0 +1,124 @@
+.container {
+  width: 100%;
+  height: auto;
+  display: flex;
+}
+.left-element {
+  width: 15%;
+  height: 100vh;
+  background-color: #31353d;
+  display: block;
+}
+.style-first-content {
+  color: #bdbdbd;
+  display: flex;
+  padding-top: 5px;
+  border-bottom: 1px solid gray;
+  width: 100%;
+  padding-bottom: 5px;
+  font-family: "Public Sans", sans-serif;
+}
+.border-bottom-left-menu {
+  border-bottom: 1px solid gray;
+}
+.detailed-first-content {
+  width: 70%;
+  padding-left: 20px;
+  font-size: 20px;
+  padding-top: 8px;
+}
+.icon-first-content {
+  width: 30%;
+  float: right;
+}
+.style-second-content {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+.flex-center-firstcontent {
+  width: 85%;
+  height: auto;
+  color: #808795;
+  display: flex;
+  padding-top: 5%;
+}
+.content-left {
+  width: 55%;
+  height: auto;
+}
+.content-right {
+  width: 45%;
+  height: auto;
+  display: block;
+  font-family: "Public Sans", sans-serif;
+  font-size: 15px;
+}
+.block-img {
+  width: 80%;
+  height: auto;
+}
+.padding-content-element {
+  padding: 10px 0;
+}
+.content-title-element {
+  font-size: 20px;
+  font-weight: bold;
+}
+.font-title {
+  font-family: "Public Sans", sans-serif;
+}
+.text-icon {
+  width: 75%;
+  height: auto;
+  font-family: "Public Sans", sans-serif;
+  font-size: 15px;
+  padding-left: 5px;
+}
+.inner-content-style {
+  width: 100%;
+  display: flex;
+  padding: 10px 0;
+}
+.right-element {
+  width: 75%;
+  height: 100vh;
+  display: block;
+  padding-left: 5%;
+  padding-top: 15px;
+}
+.content-rightEle {
+  font-size: 30px;
+  font-weight: bold;
+  font-family: "Jost", sans-serif;
+  padding-top: 3%;
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 20px;
+}
+.function-crud {
+  width: 100%;
+  height: auto;
+  display: flex;
+  padding-top: 2%;
+}
+.func-create{
+  width: 15%;
+  height: auto;
+}
+.func-search {
+  width: 20%;
+  height: auto;
+}
+.btn-create {
+  width: 100%;
+  display: flex;
+}
+.detailed-content-create {
+  font-family: "Jost", sans-serif;
+  font-size: 20px;
+  padding-left: 5px;
+}
