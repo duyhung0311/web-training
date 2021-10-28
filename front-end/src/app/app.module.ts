@@ -6,9 +6,9 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatInput,MatInputModule} from '@angular/material/input'
-import {MatFormFieldModule,MatFormField} from '@angular/material/form-field'
-import {MatIcon,MatIconModule} from '@angular/material/icon'
+import {MatInputModule} from '@angular/material/input'
+import {MatFormFieldModule} from '@angular/material/form-field'
+import {MatIconModule} from '@angular/material/icon'
 import {MatButtonModule} from '@angular/material/button';
 import { ContactComponent } from './contact/contact.component'
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -25,12 +25,23 @@ import { UserManagementComponent } from './user-management/user-management.compo
 import { DialogCreateUsermanagementComponent } from './crud-usermanagement/dialog-create-usermanagement/dialog-create-usermanagement.component';
 import { DialogEditUsermanagementComponent } from './crud-usermanagement/dialog-edit-usermanagement/dialog-edit-usermanagement.component';
 import { DialogDeleteUsermanagementComponent } from './crud-usermanagement/dialog-delete-usermanagement/dialog-delete-usermanagement.component';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { en_US } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import {NzTableModule} from "ng-zorro-antd/table"
+import {NzDividerModule } from 'ng-zorro-antd/divider';
+
+registerLocaleData(en);
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     ContactComponent,
+    UserManagementComponent,
     DialogCreateComponent,
     DialogEditComponent,
     DialogDeleteComponent,
@@ -55,8 +66,12 @@ import { DialogDeleteUsermanagementComponent } from './crud-usermanagement/dialo
     MatSidenavModule,
     MatTableModule,
     MatDialogModule,
+    FormsModule,
+    HttpClientModule,
+    NzTableModule,
+    NzDividerModule
   ],
-  providers: [],
+  providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -8,37 +8,13 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DialogCreateUsermanagementComponent } from '../crud-usermanagement/dialog-create-usermanagement/dialog-create-usermanagement.component';
 import {DialogEditUsermanagementComponent} from '../crud-usermanagement/dialog-edit-usermanagement/dialog-edit-usermanagement.component'
 import {DialogDeleteUsermanagementComponent} from '../crud-usermanagement/dialog-delete-usermanagement/dialog-delete-usermanagement.component'
-export interface PeriodicElement {
-  name: string;
-  username: string;
-  email: string;
-  phone: string;
-  actions: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {
-    name: 'Duy',
-    username: 'nduy9744',
-    email: 'nduy9744@gmail.com',
-    phone: '0901632176',
-    actions: '',
-  },
-  {
-    name: 'Duy',
-    username: 'nduy9744',
-    email: 'nduy9744@gmail.com',
-    phone: '0901632176',
-    actions: '',
-  },
-  {
-    name: 'Duy',
-    username: 'nduy9744',
-    email: 'nduy9744@gmail.com',
-    phone: '0901632176',
-    actions: '',
-  },
-];
+import {UserServiceService} from '../../services/user-service.service'
+// interface Person {
+//   key: string;
+//   name: string;
+//   age: number;
+//   address: string;
+// }
 @Component({
   selector: 'app-user-management',
   templateUrl: './user-management.component.html',
@@ -51,26 +27,40 @@ export class UserManagementComponent implements OnInit {
   faShoppingBasket = faShoppingBasket;
   faUsers = faUsers;
   faPlus = faPlus;
-  displayedColumns: string[] = [
-    'name',
-    'username',
-    'email',
-    'phone',
-    'actions',
-  ];
-  dataSource = ELEMENT_DATA;
-  constructor(private matDialog: MatDialog) {}
-  openDialog_Usermanagement() {
-    const dialogConfig = new MatDialogConfig();
-    this.matDialog.open(DialogCreateUsermanagementComponent, dialogConfig);
+  listOfData:any
+  constructor(private userService: UserServiceService) {}
+  ngOnInit(): void {
+    this.getUsers()
   }
-  openDialogEdit_Usermanagement() {
-    const dialogConfig = new MatDialogConfig();
-    this.matDialog.open(DialogEditUsermanagementComponent, dialogConfig);
+  // listOfData: Person[] = [
+  //   {
+  //     key: '1',
+  //     name: 'John Brown',
+  //     age: 32,
+  //     address: 'New York No. 1 Lake Park',
+  //   },
+  //   {
+  //     key: '2',
+  //     name: 'Jim Green',
+  //     age: 42,
+  //     address: 'London No. 1 Lake Park',
+  //   },
+  //   {
+  //     key: '3',
+  //     name: 'Joe Black',
+  //     age: 32,
+  //     address: 'Sidney No. 1 Lake Park',
+  //   },
+  // ];
+  getUsers(): void {
+    this.userService.getAll().subscribe(
+      (book:any) => {
+        this.listOfData=book
+        console.log("success")
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
   }
-  openDialogDelete_Usermanagement() {
-    const dialogConfig = new MatDialogConfig();
-    this.matDialog.open(DialogDeleteUsermanagementComponent, dialogConfig);
-  }
-  ngOnInit(): void {}
 }
