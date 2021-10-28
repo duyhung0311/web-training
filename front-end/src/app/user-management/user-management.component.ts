@@ -9,6 +9,7 @@ import { DialogCreateUsermanagementComponent } from '../crud-usermanagement/dial
 import {DialogEditUsermanagementComponent} from '../crud-usermanagement/dialog-edit-usermanagement/dialog-edit-usermanagement.component'
 import {DialogDeleteUsermanagementComponent} from '../crud-usermanagement/dialog-delete-usermanagement/dialog-delete-usermanagement.component'
 import {UserServiceService} from '../../services/user-service.service'
+import {User} from '../../model/user.dto'
 // interface Person {
 //   key: string;
 //   name: string;
@@ -27,10 +28,10 @@ export class UserManagementComponent implements OnInit {
   faShoppingBasket = faShoppingBasket;
   faUsers = faUsers;
   faPlus = faPlus;
-  listOfData:any
+  listOfData: User[] = [];
   constructor(private userService: UserServiceService) {}
   ngOnInit(): void {
-    this.getUsers()
+    this.getUsers();
   }
   // listOfData: Person[] = [
   //   {
@@ -54,9 +55,9 @@ export class UserManagementComponent implements OnInit {
   // ];
   getUsers(): void {
     this.userService.getAll().subscribe(
-      (book:any) => {
-        this.listOfData=book
-        console.log("success")
+      (book: any) => {
+        this.listOfData = book;
+        console.log('success');
       },
       (error: any) => {
         console.log(error);
