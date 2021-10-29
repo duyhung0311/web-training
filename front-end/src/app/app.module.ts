@@ -26,10 +26,10 @@ import { DialogCreateUsermanagementComponent } from './crud-usermanagement/dialo
 import { DialogEditUsermanagementComponent } from './crud-usermanagement/dialog-edit-usermanagement/dialog-edit-usermanagement.component';
 import { DialogDeleteUsermanagementComponent } from './crud-usermanagement/dialog-delete-usermanagement/dialog-delete-usermanagement.component';
 import { registerLocaleData } from '@angular/common';
-import en from '@angular/common/locales/en';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import {ReactiveFormsModule} from '@angular/forms'
+// import en from '@angular/common/locales/en';
+// import { FormsModule } from '@angular/forms';
+// import { HttpClientModule } from '@angular/common/http';
+// import {ReactiveFormsModule} from '@angular/forms'
 registerLocaleData(en);
 
 @NgModule({
