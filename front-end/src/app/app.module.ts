@@ -30,7 +30,7 @@ import { registerLocaleData } from '@angular/common';
 // import { FormsModule } from '@angular/forms';
 // import { HttpClientModule } from '@angular/common/http';
 // import {ReactiveFormsModule} from '@angular/forms'
-registerLocaleData(en);
+// registerLocaleData(en);
 
 @NgModule({
   declarations: [
@@ -62,9 +62,7 @@ registerLocaleData(en);
     MatSidenavModule,
     MatTableModule,
     MatDialogModule,
-    FormsModule,
-    HttpClientModule,
-    ReactiveFormsModule
+
   ],
   providers: [],
   bootstrap: [AppComponent],
