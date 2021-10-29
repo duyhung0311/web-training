@@ -62,7 +62,35 @@
             <fa-icon [icon]="faPlus" size="1x"></fa-icon>
             <div class="detailed-content-create">Create</div>
             <!-- Modal Create -->
+            <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel_cancelCreateUser()"
+              (nzOnOk)="addUser()">
+              <ng-container *nzModalContent>
+                <!-- Field Name -->
+                <form>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Name</label>
+                    <input formControlName="name" type="email" class="form-control">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Name</label>
+                    <input type="email" class="form-control">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Name</label>
+                    <input type="email" class="form-control">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Name</label>
+                    <input type="email" class="form-control">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Name</label>
+                    <input type="email" class="form-control">
+                  </div>
+                </form>
 
+              </ng-container>
+            </nz-modal>
           </div>
         </button>
       </div>
@@ -76,7 +104,29 @@
     </div>
     <div>
       <div>
-
+        <nz-table #basicTable [nzData]="listOfData">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable.data">
+              <td>{{ data.name }}</td>
+              <td>{{ data.username }}</td>
+              <td>{{ data.email }}</td>
+              <td>{{data.phone}}</td>
+              <td>
+                <button mat-raised-button color="primary">Edit</button>
+                <!-- Modal Edit -->
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
       </div>
     </div>
   </div>

@@ -25,15 +25,11 @@ import { UserManagementComponent } from './user-management/user-management.compo
 import { DialogCreateUsermanagementComponent } from './crud-usermanagement/dialog-create-usermanagement/dialog-create-usermanagement.component';
 import { DialogEditUsermanagementComponent } from './crud-usermanagement/dialog-edit-usermanagement/dialog-edit-usermanagement.component';
 import { DialogDeleteUsermanagementComponent } from './crud-usermanagement/dialog-delete-usermanagement/dialog-delete-usermanagement.component';
-import { NZ_I18N } from 'ng-zorro-antd/i18n';
-import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import {NzTableModule} from "ng-zorro-antd/table"
-import {NzDividerModule } from 'ng-zorro-antd/divider';
-
+import {ReactiveFormsModule} from '@angular/forms'
 registerLocaleData(en);
 
 @NgModule({
@@ -68,10 +64,9 @@ registerLocaleData(en);
     MatDialogModule,
     FormsModule,
     HttpClientModule,
-    NzTableModule,
-    NzDividerModule
+    ReactiveFormsModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
