@@ -14,10 +14,4 @@ import {
 })
 export class AppComponent {
   title = 'front-end';
-  faPhoneVolume = faPhoneVolume;
-  faShoppingBasket = faShoppingBasket;
-  faUsers = faUsers;
-  faPlus = faPlus;
-  faChartLine = faChartLine;
-  faCoffee = faCoffee;
 }
