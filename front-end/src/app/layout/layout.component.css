@@ -1,0 +1,73 @@
+.container {
+  width: 100%;
+  height: auto;
+  display: flex;
+}
+.left-side {
+  width: 25%;
+  height: 100vh;
+ background-color: #31353d;
+}
+.right-side {
+  width: 75%;
+  height: 100vh;
+}
+.flex-center-right-side{
+  padding-top: 8%;
+  width: 90%;
+  margin-left: 5%;
+  padding-bottom: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  border-bottom: 1px solid gray;
+}
+.container-btn{
+  padding-top: 2%;
+  width: 90%;
+  margin-left: 5%;
+}
+.font-text-content-btn {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  line-height: 40px;
+}
+table {
+  width: 100%;
+}
+.form-create {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.inline {
+  width: 100%;
+  display: flex;
+}
+.text-modal {
+  font-family: 'Roboto Slab', serif;
+  font-size: 15px;
+}
+.padding-input-create-user {
+  width: 100%;
+}
+.padding-input-create-user-name {
+  width: 92%;
+  position: relative;
+  right: -6%;
+}
+.padding-input-create-user-email {
+  width: 92%;
+  position: relative;
+  right: -7%;
+}
+.padding-input-create-user-phone {
+  width: 92%;
+  position: relative;
+  right: -6%;
+}
+.padding-input-create-user-password {
+  width: 96%;
+  position: relative;
+  right: -1%;
+}
