@@ -19,12 +19,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DemoNgZorroAntdModule } from './../app/ng-zorro-antd.module';
 import { LayoutComponent } from './layout/layout.component';
 import { UserComponent } from './user/user.component';
-import { FormUserComponent } from './user/form-user/form-user.component';
 
 
 registerLocaleData(en);
 @NgModule({
-  declarations: [AppComponent, MenuComponent, LayoutComponent, UserComponent,FormUserComponent],
+  declarations: [AppComponent, MenuComponent, LayoutComponent, UserComponent,],
   imports: [
     BrowserModule,
     AppRoutingModule,
