@@ -1,83 +1,216 @@
-<div class="container">
-  <div class="left-element">
-    <div class="style-first-content">
-      <div class="detailed-first-content">CRM</div>
-      <button matSuffix mat-icon-button class="icon-first-content" aria-label="Clear" style="padding-bottom: 20px">
-        <mat-icon>close</mat-icon>
-      </button>
-    </div>
-    <div class="style-second-content border-bottom-left-menu">
-      <div class="flex-center-firstcontent">
-        <div class="content-left">
-          <img src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
-            class="block-img" />
-        </div>
-        <div class="content-right">
-          <p>ID:001</p>
-          <p>Name:Duy</p>
-          <p>0901632176</p>
-        </div>
-      </div>
-    </div>
-    <div class="style-second-content">
-      <div class="flex-center-firstcontent">
-        <div style="display: block; width: 100%">
-          <div class="padding-content-element content-title-element font-title">
-            General
-          </div>
-          <div class="inner-content-style">
-            <div style="width: 25%">
-              <fa-icon [icon]="faChartLine" size="2x"></fa-icon>
-            </div>
-            <div class="text-icon">Dashboard</div>
-          </div>
-          <div class="inner-content-style">
-            <div style="width: 25%">
-              <fa-icon [icon]="faPhoneVolume" size="2x"></fa-icon>
-            </div>
-            <div class="text-icon">Contacts</div>
-          </div>
-          <div class="inner-content-style">
-            <div style="width: 25%">
-              <fa-icon [icon]="faShoppingBasket" size="2x"></fa-icon>
-            </div>
-            <div class="text-icon">Sales Order</div>
-          </div>
-          <div class="inner-content-style">
-            <div style="width: 25%">
-              <fa-icon [icon]="faUsers" size="2x"></fa-icon>
-            </div>
-            <div class="text-icon">User Management</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="right-element">
-    <div class="content-rightEle">USER MANAGEMENT</div>
-    <div class="function-crud">
-      <div class="func-create">
-        <button mat-raised-button color="primary">
-          <div class="btn-create">
-            <fa-icon [icon]="faPlus" size="1x"></fa-icon>
-            <div class="detailed-content-create">Create</div>
-            <!-- Modal Create -->
-
-          </div>
-        </button>
-      </div>
-      <div class="func-search">
-        <mat-form-field>
-          <input class="toolbar-search" type="text" matInput />
-          <mat-placeholder>Search</mat-placeholder>
-          <mat-icon matSuffix style="font-size: 1.2em">search</mat-icon>
-        </mat-form-field>
-      </div>
-    </div>
-    <div>
-      <div>
-
-      </div>
-    </div>
-  </div>
+<div class="flex-center-right-side">
+  <p>USER MANAGEMENT</p>
 </div>
+<div class="container-btn">
+  <button mat-raised-button color="primary" (click)="showModal_createUser()" class="font-text-content-btn">
+    <mat-icon>add</mat-icon>
+    Create
+  </button>
+
+</div>
+<div class="container-btn">
+  <table mat-table [dataSource]="userArr" class="mat-elevation-z8">
+    <!-- Position Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let userArr"> {{userArr.name}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef> Username </th>
+      <td mat-cell *matCellDef="let userArr"> {{userArr.username}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let userArr"> {{userArr.email}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef> Phone </th>
+      <td mat-cell *matCellDef="let userArr"> {{userArr.phone}} </td>
+    </ng-container>
+    <!-- Is Admin -->
+    <ng-container matColumnDef="isAdmin">
+      <th mat-header-cell *matHeaderCellDef> Is Admin </th>
+      <td mat-cell *matCellDef="let userArr" [ngSwitch]="userArr.isAdmin">
+        <div *ngSwitchCase="true">
+          <nz-tag [nzColor]="'#8dc73f'">{{userArr.isAdmin}}</nz-tag>
+        </div>
+        <div *ngSwitchCase="false">
+          <nz-tag [nzColor]="'#bf1e2e'">{{userArr.isAdmin}}</nz-tag>
+        </div>
+      </td>
+    </ng-container>
+    <!-- Is Active -->
+    <ng-container matColumnDef="isActive">
+      <th mat-header-cell *matHeaderCellDef> Is Active </th>
+      <td mat-cell *matCellDef="let userArr" [ngSwitch]="userArr.isActive">
+        <div *ngSwitchCase="true">
+          <nz-tag [nzColor]="'#8dc73f'">{{userArr.isActive}}</nz-tag>
+        </div>
+        <div *ngSwitchCase="false">
+          <nz-tag [nzColor]="'#bf1e2e'">{{userArr.isActive}}</nz-tag>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef> Action </th>
+
+      <td mat-cell *matCellDef="let userArr">
+        <button mat-raised-button (click)="editUser(userArr._id)" color="primary">Edit
+          <app-form-user></app-form-user>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+<!-- Modal edit -->
+<nz-modal [(nzVisible)]="isVisible2" nzTitle="Modal Edit" (nzOnCancel)="handleCancel_editUser()" *ngFor="let us of userArr"
+  (nzOnOk)="submit_edit(us._id)">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="form" (ngSubmit)="submit_edit(us._id)" >
+      <!-- Username -->
+      <nz-form-item>
+        <nz-form-label nzFor="username">Username</nz-form-label>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="user" class="padding-input-create-user">
+            <input formControlName="username" nz-input name="username" type="text" id="username">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Name -->
+      <nz-form-item>
+        <nz-form-label nzFor="name">Name</nz-form-label>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="user-switch" class="padding-input-create-user-name">
+            <input formControlName="name" nz-input name="name" type="text" id="name">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Email -->
+      <nz-form-item>
+        <nz-form-label nzFor="email">Email</nz-form-label>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="mail" class="padding-input-create-user-email">
+            <input formControlName="email" nz-input name="email" type="email" id="email">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Phone -->
+      <nz-form-item>
+        <nz-form-label nzFor="phone">Phone</nz-form-label>
+        <nz-form-control>
+          <nz-input-group class="padding-input-create-user-phone" nzPrefixIcon="phone">
+            <input formControlName="phone" nz-input name="phone" type="number" id="phone">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Phone -->
+      <nz-form-item>
+        <nz-form-label nzFor="password">Password</nz-form-label>
+        <nz-form-control>
+          <nz-input-group class="padding-input-create-user-password ">
+            <input formControlName="password" nz-input name="password" type="password" id="password">
+            <!-- <input formControlName="password" nz-input name="password" type="password" id="password"> -->
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- isAdmin -->
+      <nz-form-item>
+        <nz-form-label nzFor="isAdmin">Is Admin?</nz-form-label>
+        <nz-radio-group formControlName="isAdmin">
+          <label nz-radio nzValue="true">True</label>
+          <label nz-radio nzValue="false">False</label>
+        </nz-radio-group>
+      </nz-form-item>
+      <!-- isActive -->
+      <nz-form-item>
+        <nz-form-label nzFor="isActive">Is Active?</nz-form-label>
+        <nz-radio-group formControlName="isActive">
+          <label nz-radio nzValue="true">True</label>
+          <label nz-radio nzValue="false">False</label>
+        </nz-radio-group>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
+<!-- Modal create -->
+<nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel_createUser()"
+  (nzOnOk)="submit()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="form" (ngSubmit)="submit()">
+      <!-- Username -->
+      <nz-form-item>
+        <nz-form-label nzFor="username">Username</nz-form-label>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="user" class="padding-input-create-user">
+            <input formControlName="username" nz-input name="username" type="text" id="username">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Name -->
+      <nz-form-item>
+        <nz-form-label nzFor="name">Name</nz-form-label>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="user-switch" class="padding-input-create-user-name">
+            <input formControlName="name" nz-input name="name" type="text" id="name">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Email -->
+      <nz-form-item>
+        <nz-form-label nzFor="email">Email</nz-form-label>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="mail" class="padding-input-create-user-email">
+            <input formControlName="email" nz-input name="email" type="email" id="email">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Phone -->
+      <nz-form-item>
+        <nz-form-label nzFor="phone">Phone</nz-form-label>
+        <nz-form-control>
+          <nz-input-group class="padding-input-create-user-phone" nzPrefixIcon="phone">
+            <input formControlName="phone" nz-input name="phone" type="number" id="phone">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Phone -->
+      <nz-form-item>
+        <nz-form-label nzFor="password">Password</nz-form-label>
+        <nz-form-control>
+          <nz-input-group class="padding-input-create-user-password ">
+            <input formControlName="password" nz-input name="password" type="password" id="password">
+            <!-- <input formControlName="password" nz-input name="password" type="password" id="password"> -->
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- isAdmin -->
+      <nz-form-item>
+        <nz-form-label nzFor="isAdmin">Is Admin?</nz-form-label>
+        <nz-radio-group formControlName="isAdmin">
+          <label nz-radio nzValue="true">True</label>
+          <label nz-radio nzValue="false">False</label>
+        </nz-radio-group>
+      </nz-form-item>
+      <!-- isActive -->
+      <nz-form-item>
+        <nz-form-label nzFor="isActive">Is Active?</nz-form-label>
+        <nz-radio-group formControlName="isActive">
+          <label nz-radio nzValue="true">True</label>
+          <label nz-radio nzValue="false">False</label>
+        </nz-radio-group>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
+
+
+
