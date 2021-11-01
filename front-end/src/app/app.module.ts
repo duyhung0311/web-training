@@ -19,11 +19,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DemoNgZorroAntdModule } from './../app/ng-zorro-antd.module';
 import { LayoutComponent } from './layout/layout.component';
 import { UserComponent } from './user/user.component';
+import { authInterceptorProviders } from './helpers/auth.interceptor';
 
 
 registerLocaleData(en);
 @NgModule({
-  declarations: [AppComponent, MenuComponent, LayoutComponent, UserComponent,],
+  declarations: [AppComponent, MenuComponent, LayoutComponent, UserComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -37,9 +38,9 @@ registerLocaleData(en);
     MatRadioModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    DemoNgZorroAntdModule
+    DemoNgZorroAntdModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [{ provide: NZ_I18N, useValue: en_US }, authInterceptorProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
