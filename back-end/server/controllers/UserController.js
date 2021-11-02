@@ -2,9 +2,9 @@ const User = require('../models/User');
 const  { mutipleMongooseToObject } = require('../helpers/mongoose');
 const apiResponse = require('../helpers/apiResponse');
 
-/* 
+/*
 UserController contains function handlers to handle request from User management page.
-It will recieve the data from client, send to its model and vice versa. 
+It will recieve the data from client, send to its model and vice versa.
 This model will interact with database to store or update data.
 */
 
@@ -15,13 +15,13 @@ class UserController {
             try{
                 let userInfo = req.body;
                 const user = new User(userInfo);
-    
+
                 user
                     .save()
                     .then(() => {
                         return apiResponse.successResponse(res, 'Add user successfully');
                     });
-    
+
             }catch(err){
                 return apiResponse.ErrorResponse(res, err);
             }
@@ -82,13 +82,12 @@ class UserController {
             try{
                 let userId = req.params.id,
                     newPass = req.body.newPass;
-    
                 User
                     .findByIdAndUpdate({_id : userId}, {password : newPass})
                     .then(() => {
                         return apiResponse.successResponse(res, 'Change password successfully');
                     });
-    
+
             } catch(err){
                 return apiResponse.ErrorResponse(res, err);
             }

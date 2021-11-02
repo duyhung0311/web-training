@@ -23,6 +23,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from 'src/services/authconfig.interceptor';
 import { ProfileComponent } from './profile/profile.component';
 import { MatSelectModule } from '@angular/material/select';
+import { PasswordComponent } from './password/password.component';
 
 
 registerLocaleData(en);
@@ -34,6 +35,7 @@ registerLocaleData(en);
     UserComponent,
     LoginComponent,
     ProfileComponent,
+    PasswordComponent
   ],
   imports: [
     BrowserModule,

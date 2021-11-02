@@ -5,14 +5,17 @@ import {
   HttpHandler,
 } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private message: NzMessageService
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     const authToken = this.authService.getToken();
-    console.log("Token current",authToken)
     req = req.clone({
       setHeaders: {
         Authorization: 'bearer ' + authToken,

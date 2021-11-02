@@ -8,7 +8,7 @@ export class User{
   isAdmin?:Boolean | string;
   isActive?:Boolean | string;
   constructor(){
-    this._id="",
+    this._id='',
     this.name='',
     this.username='',
     this.password='',
@@ -16,5 +16,12 @@ export class User{
     this.phone=''
     this.isAdmin=false,
     this.isActive=false
+  }
+}
+
+export class UserChangePass {
+  newPass: string;
+  constructor() {
+    this.newPass = ""
   }
 }

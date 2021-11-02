@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
-import {User} from './../model/user.model'
+import {User, UserChangePass} from './../model/user.model'
 @Injectable({
   providedIn: 'root',
 })
@@ -25,7 +25,10 @@ export class UserService {
       .get(this.apiUrl + `${id}`)
       .pipe(catchError(this.handleError));
   }
-
+  changePassword(id: string, newPass: UserChangePass): Observable<any> {
+    let api = `${this.apiUrl}${id}`;
+    return this.httpClient.post(api, newPass).pipe(catchError(this.handleError));
+  }
   create(user: any): Observable<any> {
     return this.httpClient.post(this.apiUrl, user);
   }

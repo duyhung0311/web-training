@@ -10,8 +10,8 @@ import {
 import { UserService } from './../../services/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from 'src/model/user.model';
-import {  NzMessageService } from 'ng-zorro-antd/message';
-import {AuthService} from '../../services/auth.service'
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -24,6 +24,8 @@ export class UserComponent implements OnInit {
   faPlus = faPlus;
   faChartLine = faChartLine;
   faCoffee = faCoffee;
+  passwordVisible = false;
+  password?: string;
   displayedColumns: string[] = [
     'name',
     'username',
@@ -41,9 +43,11 @@ export class UserComponent implements OnInit {
   idSelected: any;
   constructor(
     private usService: UserService,
-    private nzMessageService: NzMessageService,
-    private auth:AuthService
-  ) {}
+    private message: NzMessageService,
+    private auth: AuthService
+  ) {
+    this.getProfile();
+  }
   ngOnInit(): void {
     this.getAllUsers();
     this.getProfile();
@@ -70,11 +74,12 @@ export class UserComponent implements OnInit {
     isActive: new FormControl(false),
   });
   cancel(): void {
-    this.nzMessageService.info('click cancel');
+    this.message.info('click cancel');
   }
 
   confirm(): void {
-    this.auth.doLogout()
+    this.auth.doLogout();
+    this.message.success('Logout successfully');
   }
   getAllUsers(): void {
     this.usService.get().subscribe(
@@ -88,15 +93,15 @@ export class UserComponent implements OnInit {
       }
     );
   }
-  getProfile():void {
+  getProfile(): void {
     this.auth.getUserProfile().subscribe(
-      res=>{
-         console.log("User Profile current user",res)
+      (res) => {
+        console.log('User Profile current user', res);
       },
-      (error:any)=>{
-        console.log("Error user profile",error)
+      (error: any) => {
+        console.log('Error user profile', error);
       }
-    )
+    );
   }
   showModal_createUser(): void {
     this.isVisible = true;
@@ -153,6 +158,7 @@ export class UserComponent implements OnInit {
         console.log('thanh cong');
         if ((res.status = 1)) {
           this.isVisible = false;
+          this.message.success('Create user successfully');
           this.getAllUsers();
         }
       },
@@ -171,6 +177,7 @@ export class UserComponent implements OnInit {
         console.log(res, 'RESPONSE');
         if ((res.message = 'Success')) {
           this.isVisible2 = false;
+          this.message.success('Edit user successfully');
           this.getAllUsers();
         }
       },

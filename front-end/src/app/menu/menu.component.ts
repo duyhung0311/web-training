@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from 'src/model/user.model';
 import { AuthService } from '../../services/auth.service';
 import {
- faUsers,faUser,faEnvelope,faPhoneVolume,faUserCircle
+  faUsers,
+  faUser,
+  faEnvelope,
+  faPhoneVolume,
+  faUserCircle,
 } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-menu',
@@ -12,12 +16,19 @@ import {
 })
 export class MenuComponent implements OnInit {
   constructor(public auth: AuthService) {}
-  faUsers=faUsers;
-  faUser=faUser;
-  faEnvelope=faEnvelope;
-  faPhone=faPhoneVolume;
-  faUserCircle=faUserCircle;
-  user ={name :'',username:'',email:'',phone:'',isAdmin:'',isActive:''}
+  faUsers = faUsers;
+  faUser = faUser;
+  faEnvelope = faEnvelope;
+  faPhone = faPhoneVolume;
+  faUserCircle = faUserCircle;
+  user = {
+    name: '',
+    username: '',
+    email: '',
+    phone: '',
+    isAdmin: '',
+    isActive: '',
+  };
   form = new FormGroup({
     name: new FormControl('', [
       Validators.required,
@@ -48,15 +59,12 @@ export class MenuComponent implements OnInit {
   getProfile(): void {
     this.auth.getUserProfile().subscribe(
       (res) => {
-        console.log('In side Menu User Profile current user', res.data.user);
-        this.user=res.data.user
+        this.user = res.data.user;
         this.patchValue(res.data.user);
-        // this.patchValue(res.data.user);
       },
       (error: any) => {
         console.log('Error user profile', error);
       }
-
     );
   }
   patchValue(users: User) {
