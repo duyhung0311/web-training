@@ -36,7 +36,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private nzMessageService: NzMessageService
+    // private nzMessageService: NzMessageService,
+    private message: NzMessageService
   ) {}
   ngOnInit(): void {
     this.getProfile();
@@ -44,8 +45,9 @@ export class ProfileComponent implements OnInit {
   getProfile(): void {
     this.auth.getUserProfile().subscribe(
       (res) => {
-        console.log('User Profile current user', res);
+        console.log('User Profile current user', res.data.user);
         this.patchValue(res.data.user);
+        window.sessionStorage.setItem('id', res.data.user._id);
       },
       (error: any) => {
         console.log('Error user profile', error);
@@ -65,9 +67,10 @@ export class ProfileComponent implements OnInit {
     console.log('Value current user', this.form.value);
   }
   cancel(): void {
-    this.nzMessageService.info('click cancel');
+    this.message.info('click cancel');
   }
   confirm(): void {
     this.auth.doLogout();
+    this.message.success('Logout successfully');
   }
 }

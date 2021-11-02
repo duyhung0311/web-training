@@ -9,6 +9,9 @@ import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from './../../services/auth.service';
 import { TokenStorageService } from './../../services/token-storage.service';
 import { Router } from '@angular/router';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { NzMessageService } from 'ng-zorro-antd/message';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -16,6 +19,8 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   faLock = faLock;
+  passwordVisible = false;
+  password?: string;
   validateForm!: FormGroup;
   form_login = new FormGroup({
     username: new FormControl('', [
@@ -33,7 +38,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private tokenStorage: TokenStorageService,
-    private router: Router
+    private router: Router,
+    private message: NzMessageService,
   ) {}
   submitForm(): void {
     for (const i in this.validateForm.controls) {
@@ -53,17 +59,25 @@ export class LoginComponent implements OnInit {
   reloadPage(): void {
     window.location.reload();
   }
-  submitLogin(): void {
-    console.log('Value input login', this.form_login.value);
+  submitLogin(type: string): void {
+    console.log('Value input login', this.form_login.value.username);
     this.auth.login(this.form_login.value).subscribe((res) => {
       console.log('successful res', res);
       this.tokenStorage.saveToken(res.data.token);
       this.tokenStorage.saveUser(this.form_login.value.username);
       if ((res.status = 1)) {
         this.form_login.reset();
-        this.router.navigate(['profile']);
+        this.message.success('Login successfully');
+        this.router.navigate(['user']);
+      }
+      else {
+        this.message.error('Login failed')
       }
     });
-    console.log('Result', this.auth.signIn(this.form_login.value));
+    (error: any) => {
+      console.log('Error user profile', error);
+      this.message.error('Login failed');
+    };
   }
+
 }

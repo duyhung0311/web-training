@@ -9,7 +9,7 @@ dotenv.config({path: '../../.env'});
 class AuthController {
     authenticate(req, res){
         // call for passport authentication
-        passport.authenticate('local', (err, user, info) => {       
+        passport.authenticate('local', (err, user, info) => {
             // error from passport middleware
             if (err)
                 return apiResponse.validationError(res, err);
@@ -18,7 +18,7 @@ class AuthController {
                 return apiResponse.successResponseWithData(res, 'Success', {token: user.generateJwt()});
             }
             // unknown user or wrong password
-            else 
+            else
                 return apiResponse.notFoundResponse(res, info);
         })(req, res);
     }
@@ -30,8 +30,8 @@ class AuthController {
                 .findOne({ _id: userId })
                 .then((data) => {
                     // remove password before sent user info to client
-                    let userInfo = _.pick(data, ['_id', 'name','username', 'email', 'phone', 'isAdmin', 'isActive', 'createdTime']);
-                    return apiResponse.successResponseWithData(res, 'Success', {user: userInfo}); 
+                    let userInfo = _.pick(data, ['_id', 'name','username', 'email', 'phone', 'isAdmin', 'isActive', 'createdTime','password']);
+                    return apiResponse.successResponseWithData(res, 'Success', {user: userInfo});
                 });
         } catch(err){
             return apiResponse.ErrorResponse(res, err);
