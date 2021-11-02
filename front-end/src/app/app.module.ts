@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MenuComponent } from './menu/menu.component'
-import { HttpClientModule } from '@angular/common/http';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
@@ -19,11 +18,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DemoNgZorroAntdModule } from './../app/ng-zorro-antd.module';
 import { LayoutComponent } from './layout/layout.component';
 import { UserComponent } from './user/user.component';
+import { LoginComponent } from './login/login.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from 'src/services/authconfig.interceptor';
+import { ProfileComponent } from './profile/profile.component';
+import { MatSelectModule } from '@angular/material/select';
 
 
 registerLocaleData(en);
 @NgModule({
-  declarations: [AppComponent, MenuComponent, LayoutComponent, UserComponent,],
+  declarations: [
+    AppComponent,
+    MenuComponent,
+    LayoutComponent,
+    UserComponent,
+    LoginComponent,
+    ProfileComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -37,9 +48,17 @@ registerLocaleData(en);
     MatRadioModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    DemoNgZorroAntdModule
+    DemoNgZorroAntdModule,
+    MatSelectModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [
+    { provide: NZ_I18N, useValue: en_US },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

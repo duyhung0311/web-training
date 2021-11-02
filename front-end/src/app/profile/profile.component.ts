@@ -1,23 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms';
 import { User } from 'src/model/user.model';
-import { AuthService } from '../../services/auth.service';
-import {
- faUsers,faUser,faEnvelope,faPhoneVolume,faUserCircle
-} from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from 'src/services/auth.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
+
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css'],
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.css'],
 })
-export class MenuComponent implements OnInit {
-  constructor(public auth: AuthService) {}
-  faUsers=faUsers;
-  faUser=faUser;
-  faEnvelope=faEnvelope;
-  faPhone=faPhoneVolume;
-  faUserCircle=faUserCircle;
-  user ={name :'',username:'',email:'',phone:'',isAdmin:'',isActive:''}
+export class ProfileComponent implements OnInit {
+  radioValue = 'A';
+  radioValue1 = 'B';
   form = new FormGroup({
     name: new FormControl('', [
       Validators.required,
@@ -39,24 +33,23 @@ export class MenuComponent implements OnInit {
     isAdmin: new FormControl(false),
     isActive: new FormControl(false),
   });
+  constructor(
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private nzMessageService: NzMessageService
+  ) {}
   ngOnInit(): void {
     this.getProfile();
-  }
-  logout() {
-    this.auth.doLogout();
   }
   getProfile(): void {
     this.auth.getUserProfile().subscribe(
       (res) => {
-        console.log('In side Menu User Profile current user', res.data.user);
-        this.user=res.data.user
+        console.log('User Profile current user', res);
         this.patchValue(res.data.user);
-        // this.patchValue(res.data.user);
       },
       (error: any) => {
         console.log('Error user profile', error);
       }
-
     );
   }
   patchValue(users: User) {
@@ -70,5 +63,11 @@ export class MenuComponent implements OnInit {
       isActive: users.isActive?.toString(),
     });
     console.log('Value current user', this.form.value);
+  }
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
+  }
+  confirm(): void {
+    this.auth.doLogout();
   }
 }

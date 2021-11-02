@@ -12,11 +12,25 @@
   width: 75%;
   height: 100vh;
 }
+
 .inner-topic {
   width: 90%;
   display: flex;
   border-bottom: 1px solid gray;
   margin-left: 5%;
+}
+.inner-content {
+  width: 100%;
+  display: flex;
+  margin-left: 5%;
+  padding-top: 3%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.flex-center-inco {
+  width: 100%;
 }
 .flex-center-right-side {
   padding-top: 8%;
@@ -82,4 +96,21 @@ table {
   width: 96%;
   position: relative;
   right: -1%;
+}
+.input-profile {
+  width: 100%;
+  display: flex;
+}
+.input-profile p {
+  width: 30%;
+  font-size: 18px;
+  font-family: "Zen Maru Gothic", sans-serif;
+  color: black;
+}
+.input-profile input {
+  margin-left: 15px;
+  width: 60%;
+}
+.login-form {
+  max-width: 300px;
 }

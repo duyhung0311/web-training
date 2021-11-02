@@ -1,80 +1,97 @@
-<div class="flex-center-right-side">
-  <p>USER MANAGEMENT</p>
+<div class="container">
+  <div class="left-side">
+    <app-menu></app-menu>
+  </div>
+  <div class="right-side">
+    <div class="inner-topic">
+      <div class="flex-center-right-side">
+        <p>USER MANAGEMENT</p>
+      </div>
+      <div class="exit-icon">
+        <a nz-popconfirm nzPopconfirmTitle="Are you sure to exit this website?" nzPopconfirmPlacement="bottom"
+          style="display: flex;color:black" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">
+          <mat-icon>exit_to_app</mat-icon>
+          <p>Logout</p>
+        </a>
+      </div>
+    </div>
+    <div class="container-btn">
+      <button mat-raised-button color="primary" (click)="showModal_createUser()" class="font-text-content-btn">
+        <mat-icon>add</mat-icon>
+        Create
+      </button>
+
+    </div>
+    <div class="container-btn">
+      <table mat-table [dataSource]="userArr" class="mat-elevation-z8">
+        <!-- Position Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let userArr"> {{userArr.name}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="username">
+          <th mat-header-cell *matHeaderCellDef> Username </th>
+          <td mat-cell *matCellDef="let userArr"> {{userArr.username}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef> Email </th>
+          <td mat-cell *matCellDef="let userArr"> {{userArr.email}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef> Phone </th>
+          <td mat-cell *matCellDef="let userArr"> {{userArr.phone}} </td>
+        </ng-container>
+        <!-- Is Admin -->
+        <ng-container matColumnDef="isAdmin">
+          <th mat-header-cell *matHeaderCellDef> Is Admin </th>
+          <td mat-cell *matCellDef="let userArr" [ngSwitch]="userArr.isAdmin">
+            <div *ngSwitchCase="true">
+              <nz-tag [nzColor]="'#8dc73f'">{{userArr.isAdmin}}</nz-tag>
+            </div>
+            <div *ngSwitchCase="false">
+              <nz-tag [nzColor]="'#bf1e2e'">{{userArr.isAdmin}}</nz-tag>
+            </div>
+          </td>
+        </ng-container>
+        <!-- Is Active -->
+        <ng-container matColumnDef="isActive">
+          <th mat-header-cell *matHeaderCellDef> Is Active </th>
+          <td mat-cell *matCellDef="let userArr" [ngSwitch]="userArr.isActive">
+            <div *ngSwitchCase="true">
+              <nz-tag [nzColor]="'#8dc73f'">{{userArr.isActive}}</nz-tag>
+            </div>
+            <div *ngSwitchCase="false">
+              <nz-tag [nzColor]="'#bf1e2e'">{{userArr.isActive}}</nz-tag>
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> Action </th>
+
+          <td mat-cell *matCellDef="let userArr">
+            <button mat-raised-button (click)="editUser(userArr._id)" color="primary">Edit
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
 </div>
-<div class="container-btn">
-  <button mat-raised-button color="primary" (click)="showModal_createUser()" class="font-text-content-btn">
-    <mat-icon>add</mat-icon>
-    Create
-  </button>
 
-</div>
-<div class="container-btn">
-  <table mat-table [dataSource]="userArr" class="mat-elevation-z8">
-    <!-- Position Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let userArr"> {{userArr.name}} </td>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="username">
-      <th mat-header-cell *matHeaderCellDef> Username </th>
-      <td mat-cell *matCellDef="let userArr"> {{userArr.username}} </td>
-    </ng-container>
-
-    <!-- Weight Column -->
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef> Email </th>
-      <td mat-cell *matCellDef="let userArr"> {{userArr.email}} </td>
-    </ng-container>
-
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="phone">
-      <th mat-header-cell *matHeaderCellDef> Phone </th>
-      <td mat-cell *matCellDef="let userArr"> {{userArr.phone}} </td>
-    </ng-container>
-    <!-- Is Admin -->
-    <ng-container matColumnDef="isAdmin">
-      <th mat-header-cell *matHeaderCellDef> Is Admin </th>
-      <td mat-cell *matCellDef="let userArr" [ngSwitch]="userArr.isAdmin">
-        <div *ngSwitchCase="true">
-          <nz-tag [nzColor]="'#8dc73f'">{{userArr.isAdmin}}</nz-tag>
-        </div>
-        <div *ngSwitchCase="false">
-          <nz-tag [nzColor]="'#bf1e2e'">{{userArr.isAdmin}}</nz-tag>
-        </div>
-      </td>
-    </ng-container>
-    <!-- Is Active -->
-    <ng-container matColumnDef="isActive">
-      <th mat-header-cell *matHeaderCellDef> Is Active </th>
-      <td mat-cell *matCellDef="let userArr" [ngSwitch]="userArr.isActive">
-        <div *ngSwitchCase="true">
-          <nz-tag [nzColor]="'#8dc73f'">{{userArr.isActive}}</nz-tag>
-        </div>
-        <div *ngSwitchCase="false">
-          <nz-tag [nzColor]="'#bf1e2e'">{{userArr.isActive}}</nz-tag>
-        </div>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef> Action </th>
-
-      <td mat-cell *matCellDef="let userArr">
-        <button mat-raised-button (click)="editUser(userArr._id)" color="primary">Edit
-        </button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-</div>
 <!-- Modal edit -->
-<nz-modal [(nzVisible)]="isVisible2" nzTitle="Modal Edit" (nzOnCancel)="handleCancel_editUser()" *ngFor="let us of userArr"
-  (nzOnOk)="submit_edit(us._id)">
+<nz-modal [(nzVisible)]="isVisible2" nzTitle="Modal Edit" (nzOnCancel)="handleCancel_editUser()"
+  *ngFor="let us of userArr" (nzOnOk)="submit_edit(us._id)">
   <ng-container *nzModalContent>
-    <form nz-form [formGroup]="form" (ngSubmit)="submit_edit(us._id)" >
+    <form nz-form [formGroup]="form" (ngSubmit)="submit_edit(us._id)">
       <!-- Username -->
       <nz-form-item>
         <nz-form-label nzFor="username">Username</nz-form-label>
@@ -210,6 +227,3 @@
     </form>
   </ng-container>
 </nz-modal>
-
-
-
