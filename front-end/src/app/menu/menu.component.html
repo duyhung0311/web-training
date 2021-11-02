@@ -8,13 +8,39 @@
     </div>
     <div class="function">
       <div class="inner-img">
-        <img src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg" alt="Avatar account" class="img-ava">
+        <img src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
+          alt="Avatar account" class="img-ava">
       </div>
+
       <div class="content-info">
-        <p>John Smith</p>
-        <p>0901632187</p>
-        <p>nduy9744@gmail.com</p>
+        <div>
+          <fa-icon [icon]="faUserCircle"></fa-icon>
+          {{user.username}}</div>
+        <div>
+          <fa-icon [icon]="faEnvelope">
+          </fa-icon>
+          {{user.email}}
+        </div>
+        <div>
+          <fa-icon [icon]="faPhone">
+          </fa-icon>
+          {{user.phone}}
+        </div>
+        <div [ngSwitch]="user.isAdmin">
+          <div *ngSwitchCase="true">
+            <fa-icon [icon]="faUser"></fa-icon>
+            Admin
+          </div>
+          <div *ngSwitchCase="false">
+            <fa-icon [icon]="faUsers"></fa-icon>
+            User
+          </div>
+        </div>
+        <!-- <p formControlName="phone"></p>
+                <p formControlName="email"></p> -->
       </div>
+
+
     </div>
     <div class="general">
       <div class="title-general">General</div>
@@ -55,7 +81,15 @@
           <mat-icon>settings</mat-icon>
         </div>
         <div class="content-general">
-          <p>Settings </p>
+          <p>User Profile </p>
+        </div>
+      </div>
+      <div class="container-general">
+        <div class="icon-general">
+          <mat-icon>exit_to_app</mat-icon>
+        </div>
+        <div class="content-general">
+          <p>Logout </p>
         </div>
       </div>
     </div>

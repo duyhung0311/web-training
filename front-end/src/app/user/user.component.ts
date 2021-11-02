@@ -9,9 +9,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from './../../services/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { NzInputGroupComponent } from 'ng-zorro-antd/input';
 import { User } from 'src/model/user.model';
-import { NzNotificationModule, NzNotificationService } from 'ng-zorro-antd/notification';
+import {  NzMessageService } from 'ng-zorro-antd/message';
+import {AuthService} from '../../services/auth.service'
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -39,9 +39,14 @@ export class UserComponent implements OnInit {
   radioValue = 'A';
   radioValue1 = 'A';
   idSelected: any;
-  constructor(private usService: UserService,private notification:NzNotificationService) {}
+  constructor(
+    private usService: UserService,
+    private nzMessageService: NzMessageService,
+    private auth:AuthService
+  ) {}
   ngOnInit(): void {
     this.getAllUsers();
+    this.getProfile();
   }
   form = new FormGroup({
     name: new FormControl('', [
@@ -64,12 +69,13 @@ export class UserComponent implements OnInit {
     isAdmin: new FormControl(false),
     isActive: new FormControl(false),
   });
+  cancel(): void {
+    this.nzMessageService.info('click cancel');
+  }
 
-  // patchValue() {
-  //   this.form.patchValue{
-  //     name: this.userArr
-  //   }
-  // }
+  confirm(): void {
+    this.auth.doLogout()
+  }
   getAllUsers(): void {
     this.usService.get().subscribe(
       (res) => {
@@ -81,6 +87,16 @@ export class UserComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+  getProfile():void {
+    this.auth.getUserProfile().subscribe(
+      res=>{
+         console.log("User Profile current user",res)
+      },
+      (error:any)=>{
+        console.log("Error user profile",error)
+      }
+    )
   }
   showModal_createUser(): void {
     this.isVisible = true;
@@ -146,17 +162,17 @@ export class UserComponent implements OnInit {
     );
   }
   submit_edit(id2: string): void {
-    console.log("value input",this.form.value);
+    console.log('value input', this.form.value);
     let idAr = this.editUser(id2);
     console.log(this.userArr, '/update');
     console.log('idSelected after open modal', idAr);
-    this.usService.update(idAr,this.form.value).subscribe(
+    this.usService.update(idAr, this.form.value).subscribe(
       (res) => {
         console.log(res, 'RESPONSE');
-         if ((res.message = "Success")) {
-           this.isVisible2 = false;
-           this.getAllUsers();
-         }
+        if ((res.message = 'Success')) {
+          this.isVisible2 = false;
+          this.getAllUsers();
+        }
       },
       (error: any) => {
         console.log(error);

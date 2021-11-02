@@ -8,7 +8,7 @@
 }
 .topic-menu {
   padding-top: 10%;
-  width: 90%;
+  width: 100%;
   display: flex;
   padding-left: 10%;
   border-bottom: 1px solid gray;
@@ -17,7 +17,7 @@
 .left-topic-menu {
   font-size: 20px;
   font-family: "Montserrat", sans-serif;
-  width: 80%;
+  width: 100%;
 }
 .right-topic-menu {
   width: 20%;
@@ -30,16 +30,19 @@
   padding-bottom: 15px;
 }
 .inner-img {
-  width: 40%;
+  width: 30%;
   height: auto;
 }
 .content-info {
-  width: 40%;
+  width: 70%;
   height: auto;
   padding-left: 10%;
   font-family: 'Montserrat', sans-serif;
   font-size: 15px;
   line-height: 30px;
+}
+.content-info div {
+  font-size: 15px;
 }
 .img-ava {
   width: 100%;
