@@ -12,4 +12,6 @@ router.delete('/:id', contactsController.deleteContact); // delete a contact by 
 router.post('/delete', contactsController.multiDeleteContact); // delete multi contacts
 router.get('/search/:contactName', contactsController.findContact); // find a contact by contact name
 
+
+
 module.exports = router;

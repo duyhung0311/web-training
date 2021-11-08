@@ -13,6 +13,7 @@ import { ContactsService } from 'src/services/contacts.service';
 })
 export class ContactsComponent implements OnInit {
   isVisible = false;
+  selectedValue = null;
   isVisible2 = false;
   checked = false;
   loading = false;
@@ -23,6 +24,9 @@ export class ContactsComponent implements OnInit {
   userArr: any[] = [];
   userArr1 = new User();
   contactArr: Contacts[] = [];
+  contactArr1: Contacts[] = [];
+  arr_pust: any[] = [];
+  usSelectArr: any[] = [];
   editId: string | null = null;
   passwordVisible = false;
   listIdSelect: string[] = [];
@@ -38,6 +42,10 @@ export class ContactsComponent implements OnInit {
     'assignedTo',
     'actions',
   ];
+  form_select = new FormGroup({
+    selectAssignedTo: new FormControl('', [Validators.required]),
+    selectLeadSrc: new FormControl('', [Validators.required]),
+  });
   form = new FormGroup({
     creator: new FormControl('', [Validators.required]),
     contactName: new FormControl('', [Validators.required]),
@@ -84,6 +92,7 @@ export class ContactsComponent implements OnInit {
       (res) => {
         this.userArr = res.data.users;
         this.userArr1 = res.data.users;
+        this.usSelectArr = res.data.users;
         console.log('Get success when get all user', res.data.users);
       },
       (error: any) => {
@@ -217,6 +226,7 @@ export class ContactsComponent implements OnInit {
       (res) => {
         console.log('Contacts list', res);
         this.contactArr = res.data.contacts;
+        this.contactArr1 = res.data.contacts;
         this.contactArr = this.contactArr.map((x) => ({
           isCheck: false,
           _id: x._id,
@@ -333,5 +343,67 @@ export class ContactsComponent implements OnInit {
         console.log('Error user profile', error);
       }
     );
+  }
+  // Print value when press select assigned to
+  selectAssignedTo(): void {
+    console.log(this.form_select.value);
+    let req;
+    let arr = new Array();
+    if (this.form_select.value.selectAssignedTo === null) {
+      this.contactService.getAllList().subscribe(
+        (res) => {
+          console.log('Contacts list', res);
+          this.contactArr = res.data.contacts;
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    } else {
+      this.contactService.getAllList().subscribe(
+        (res) => {
+          console.log('Contacts list', res.data.contacts);
+          const arr = res.data.contacts.filter(
+            (us: any) =>
+              us.assignedTo === this.form_select.value.selectAssignedTo
+          );
+          console.log('âssa', arr);
+          this.contactArr = arr;
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    }
+  }
+  // Print value when press select lead source
+  selectLeadSource(): void {
+    console.log(this.form_select.value.selectLeadSrc);
+    let arr = new Array();
+    if (this.form_select.value.selectLeadSrc === null) {
+      this.contactService.getAllList().subscribe(
+        (res) => {
+          console.log('Contacts list', res);
+          this.contactArr = res.data.contacts;
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    } else {
+      this.contactService.getAllList().subscribe(
+        (res) => {
+          console.log('Contacts list', res.data.contacts);
+          const arr = res.data.contacts.filter(
+            (us: any) => us.leadSrc === this.form_select.value.selectLeadSrc
+          );
+          console.log('âssa', arr);
+          this.contactArr = arr;
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    }
   }
 }

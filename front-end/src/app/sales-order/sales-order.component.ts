@@ -17,7 +17,12 @@ export class SalesOrderComponent implements OnInit {
   isVisible2 = false;
   salesOrderArr: any[] = [];
   userArr: any[] = [];
-  usArr:any[0]=[];
+  usSelectArr: any[] = [];
+  usArr: any[0] = [];
+  form_select = new FormGroup({
+    selectAssignedTo: new FormControl('', [Validators.required]),
+    selectStatus: new FormControl('', [Validators.required]),
+  });
   form = new FormGroup({
     search: new FormControl('', [Validators.required]),
     creator: new FormControl('', [Validators.required]),
@@ -98,6 +103,7 @@ export class SalesOrderComponent implements OnInit {
     this.usService.get().subscribe(
       (res) => {
         this.userArr = res.data.users;
+        this.usSelectArr = res.data.users;
         console.log('Get success when get all user', res.data.users);
       },
       (error: any) => {
@@ -305,12 +311,71 @@ export class SalesOrderComponent implements OnInit {
       (res) => {
         console.log('User Profile current user', res.data.user);
         this.patchValue_profile(res.data.user);
-        this.usArr=res.data.user
+        this.usArr = res.data.user;
         window.sessionStorage.setItem('id', res.data.user._id);
       },
       (error: any) => {
         console.log('Error user profile', error);
       }
     );
+  }
+  selectAssignedTo(): void {
+    console.log(this.form_select.value);
+    let req;
+    let arr = new Array();
+    if (this.form_select.value.selectAssignedTo === null) {
+      this.salesOrderService.getAllList().subscribe(
+        (res) => {
+          console.log('Sales order list', res);
+          this.salesOrderArr = res.data.salesOrder;
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    } else {
+      this.salesOrderService.getAllList().subscribe(
+        (res) => {
+          console.log('Sales order list', res.data.salesOrder);
+          const arr = res.data.salesOrder.filter(
+            (us: any) =>
+              us.assignedTo === this.form_select.value.selectAssignedTo
+          );
+          console.log('âssa', arr);
+          this.salesOrderArr = arr;
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    }
+  }
+  selectStatus(): void{
+    console.log(this.form_select.value.selectStatus);
+     if (this.form_select.value.selectStatus === null) {
+       this.salesOrderService.getAllList().subscribe(
+         (res) => {
+           console.log('Sales order list', res.data.salesOrder);
+           this.salesOrderArr = res.data.salesOrder;
+         },
+         (error: any) => {
+           console.log(error);
+         }
+       );
+     } else {
+       this.salesOrderService.getAllList().subscribe(
+         (res) => {
+           console.log('Sales order list', res.data.salesOrder);
+           const arr = res.data.salesOrder.filter(
+             (us: any) => us.status === this.form_select.value.selectStatus
+           );
+           console.log('âssa', arr);
+           this.salesOrderArr = arr;
+         },
+         (error: any) => {
+           console.log(error);
+         }
+       );
+     }
   }
 }

@@ -109,5 +109,10 @@ table {
 }
 .btn-search {
   padding-top: 20px;
-  width: none;
+   width: 100%;
+  display: flex;
+}
+.inline-function{
+  width: 100%;
+  display: flex;
 }

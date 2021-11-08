@@ -132,4 +132,11 @@ table {
 }
 .btn-search {
   padding-top: 10px;
+  width: 100%;
+  display: flex;
 }
+.select-assignedTo{
+  width: 100%;
+  margin-left: 10px;
+}
+

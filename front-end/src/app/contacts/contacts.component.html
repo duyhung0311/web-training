@@ -40,6 +40,30 @@
                   <button (click)="getContactName()" nz-button nzType="primary" nzSearch><i nz-icon
                       nzType="search"></i></button>
                 </ng-template>
+                <div style="width: 60%;">
+                 <form nz-form [formGroup]="form_select" >
+                    <nz-select nzAllowClear  nzPlaceHolder="Select assigned user"class="select-assignedTo" formControlName="selectAssignedTo" (ngModelChange)=" selectAssignedTo()">
+                      <ng-container *ngFor="let us of usSelectArr">
+                        <nz-option [nzLabel]="us.username" [nzValue]="us.username" *ngIf="us.isAdmin==false">
+                          {{us.username}}
+                        </nz-option>
+                      </ng-container>
+                    </nz-select>
+                 </form>
+                </div>
+                <div style="width: 60%; margin-left: 10px;">
+                  <form nz-form [formGroup]="form_select">
+                    <nz-select nzAllowClear nzPlaceHolder="Select lead source" class="select-assignedTo"
+                      formControlName="selectLeadSrc" (ngModelChange)=" selectLeadSource()">
+                        <nz-option nzValue="Existing Customer" nzLabel="Existing Customer"></nz-option>
+                        <nz-option nzValue="Partner" nzLabel="Partner"></nz-option>
+                        <nz-option nzValue="Conference" nzLabel="Conference"></nz-option>
+                        <nz-option nzValue="Website" nzLabel="Website"></nz-option>
+                        <nz-option nzValue="Word of Mouth" nzLabel="Word of Mouth"></nz-option>
+                        <nz-option nzValue="Other" nzLabel="Other"></nz-option>
+                    </nz-select>
+                  </form>
+                </div>
               </div>
             </div>
             <div *ngSwitchCase="false"></div>
@@ -97,7 +121,7 @@
                   </a>
                 </div>
               </td>
-              <td  *ngSwitchCase="false">
+              <td *ngSwitchCase="false">
               </td>
             </tr>
           </tbody>

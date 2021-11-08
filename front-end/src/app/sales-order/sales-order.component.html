@@ -34,13 +34,38 @@
               </div>
               <div>
                 <div class="btn-search">
-                  <nz-input-group style="width: 25%;" nzSearch [nzAddOnAfter]="suffixIconButton" [formGroup]="form">
-                    <input formControlName="search" type="text" nz-input placeholder="input search text" />
+                  <nz-input-group  style="width: 25%;" nzSearch [nzAddOnAfter]="suffixIconButton" [formGroup]="form">
+                    <input  formControlName="search" type="text" nz-input placeholder="input search text" />
                   </nz-input-group>
                   <ng-template #suffixIconButton>
                     <button (click)="getContactName()" nz-button nzType="primary" nzSearch><i nz-icon
                         nzType="search"></i></button>
                   </ng-template>
+                  <div style="width: 15%; margin-left: 10px;">
+                    <form nz-form [formGroup]="form_select">
+                      <nz-select style="width: 150px;" nzAllowClear nzPlaceHolder="Select assigned user"
+                       formControlName="selectAssignedTo"
+                        (ngModelChange)=" selectAssignedTo()">
+                        <ng-container *ngFor="let us of usSelectArr">
+                          <nz-option [nzLabel]="us.username" [nzValue]="us.username" *ngIf="us.isAdmin==false">
+                            {{us.username}}
+                          </nz-option>
+                        </ng-container>
+                      </nz-select>
+                    </form>
+                  </div>
+                  <div style="width: 70%;margin-left: 10px;">
+                    <form nz-form [formGroup]="form_select">
+                      <nz-select style="width: 150px;" nzAllowClear nzPlaceHolder="Select status"
+                        formControlName="selectStatus"
+                        (ngModelChange)="selectStatus()">
+                          <nz-option nzValue="Created" nzLabel="Created"></nz-option>
+                          <nz-option nzValue="Approved" nzLabel="Approved"></nz-option>
+                          <nz-option nzValue="Delivered" nzLabel="Delivered"></nz-option>
+                          <nz-option nzValue="Cancelled" nzLabel="Cancelled"></nz-option>
+                      </nz-select>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
@@ -79,7 +104,8 @@
           <tbody>
             <tr *ngFor="let data of salesOrderArr">
               <td *ngSwitchCase="true">
-              <label nz-checkbox (ngModelChange)="checkItem(data._id, data.isCheck)" [(ngModel)]="data.isCheck"></label>
+                <label nz-checkbox (ngModelChange)="checkItem(data._id, data.isCheck)"
+                  [(ngModel)]="data.isCheck"></label>
               </td>
               <td *ngSwitchCase="false">
               </td>
@@ -97,8 +123,9 @@
                 <div style="display:flex">
                   <button mat-raised-button color="primary" (click)="getByIdSalesOrder(data._id)">Edit
                   </button>
-                  <a nz-popconfirm nzPopconfirmTitle="Are you want to delete  this sales order?" nzPopconfirmPlacement="bottom"
-                    (nzOnConfirm)="delete_one(data._id)" style="display: flex;color:black" (nzOnCancel)="cancel()">
+                  <a nz-popconfirm nzPopconfirmTitle="Are you want to delete  this sales order?"
+                    nzPopconfirmPlacement="bottom" (nzOnConfirm)="delete_one(data._id)"
+                    style="display: flex;color:black" (nzOnCancel)="cancel()">
                     <button mat-raised-button color="accent" style="margin-left: 15px;">Delete
                     </button>
                   </a>
