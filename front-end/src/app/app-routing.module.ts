@@ -5,12 +5,15 @@ import { UserComponent } from './user/user.component';
 import { AuthGuard } from "../app/helpers/auth.guard";
 import { ProfileComponent } from './profile/profile.component';
 import { PasswordComponent } from './password/password.component';
-
+import {ContactsComponent} from './contacts/contacts.component'
+import {SalesOrderComponent} from './sales-order/sales-order.component'
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'password', component: PasswordComponent },
+  { path: 'contacts',component:ContactsComponent},
+  {path:'sales-order',component:SalesOrderComponent},
   { path: 'user', component: UserComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];

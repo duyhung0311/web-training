@@ -24,6 +24,8 @@ import { AuthInterceptor } from 'src/services/authconfig.interceptor';
 import { ProfileComponent } from './profile/profile.component';
 import { MatSelectModule } from '@angular/material/select';
 import { PasswordComponent } from './password/password.component';
+import { ContactsComponent } from './contacts/contacts.component';
+import { SalesOrderComponent } from './sales-order/sales-order.component';
 
 
 registerLocaleData(en);
@@ -35,7 +37,9 @@ registerLocaleData(en);
     UserComponent,
     LoginComponent,
     ProfileComponent,
-    PasswordComponent
+    PasswordComponent,
+    ContactsComponent,
+    SalesOrderComponent,
   ],
   imports: [
     BrowserModule,

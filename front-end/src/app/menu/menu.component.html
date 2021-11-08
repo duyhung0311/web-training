@@ -15,7 +15,8 @@
       <div class="content-info">
         <div>
           <fa-icon [icon]="faUserCircle"></fa-icon>
-          {{user.username}}</div>
+          {{user.username}}
+        </div>
         <div>
           <fa-icon [icon]="faEnvelope">
           </fa-icon>
@@ -44,54 +45,121 @@
     </div>
     <div class="general">
       <div class="title-general">General</div>
-      <div class="container-general">
-        <div class="icon-general">
-          <mat-icon>dashboard</mat-icon>
+      <div class="container-general" [ngSwitch]="usArr.isAdmin">
+        <div *ngSwitchCase="true">
+          <div class="inline-element-menu">
+            <div class="icon-general">
+              <mat-icon>dashboard</mat-icon>
+            </div>
+            <div class="content-general">
+              <p>Dashboard</p>
+            </div>
+          </div>
+          <div class="inline-element-menu">
+            <a routerLink="/user" class="container-general">
+              <div class="icon-general">
+                <mat-icon>supervisor_account</mat-icon>
+              </div>
+              <div class="content-general">
+                <p>User Management </p>
+              </div>
+            </a>
+          </div>
+          <div class="inline-element-menu">
+            <a routerLink="/contacts" class="container-general">
+              <div class="icon-general">
+                <mat-icon>dialer_sip</mat-icon>
+              </div>
+              <div class="content-general">
+                <p>Contact </p>
+              </div>
+            </a>
+          </div>
+          <div class="inline-element-menu">
+            <a routerLink="/sales-order" class="container-general">
+              <div class="icon-general">
+                <mat-icon>add_shopping_cart</mat-icon>
+              </div>
+              <div class="content-general">
+                <p>Sales Order </p>
+              </div>
+            </a>
+          </div>
+          <div class="inline-element-menu">
+            <a routerLink="/profile" class="container-general">
+              <div class="icon-general">
+                <mat-icon>settings</mat-icon>
+              </div>
+              <div class="content-general">
+                <p>User Profile </p>
+              </div>
+            </a>
+          </div>
+          <div class="inline-element-menu">
+            <a routerLink="/password" class="container-general">
+              <div class="icon-general">
+                <mat-icon>block</mat-icon>
+              </div>
+              <div class="content-general">
+                <p>Change Password </p>
+              </div>
+            </a>
+          </div>
         </div>
-        <div class="content-general">
-          <p>Dashboard</p>
+        <div *ngSwitchCase="false">
+          <div class="inline-element-menu">
+            <div class="icon-general">
+              <mat-icon>dashboard</mat-icon>
+            </div>
+            <div class="content-general">
+              <p>Dashboard</p>
+            </div>
+          </div>
+          <div class="inline-element-menu">
+            <a routerLink="/contacts" class="container-general">
+              <div class="icon-general">
+                <mat-icon>dialer_sip</mat-icon>
+              </div>
+              <div class="content-general">
+                <p>Contact </p>
+              </div>
+            </a>
+          </div>
+          <div class="inline-element-menu">
+            <a routerLink="/sales-order" class="container-general">
+              <div class="icon-general">
+                <mat-icon>add_shopping_cart</mat-icon>
+              </div>
+              <div class="content-general">
+                <p>Sales Order </p>
+              </div>
+            </a>
+          </div>
+          <div class="inline-element-menu">
+            <a routerLink="/profile" class="container-general">
+              <div class="icon-general">
+                <mat-icon>settings</mat-icon>
+              </div>
+              <div class="content-general">
+                <p>User Profile </p>
+              </div>
+            </a>
+          </div>
+          <div class="inline-element-menu">
+            <a routerLink="/password" class="container-general">
+              <div class="icon-general">
+                <mat-icon>block</mat-icon>
+              </div>
+              <div class="content-general">
+                <p>Change Password </p>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
-      <div class="container-general">
-        <div class="icon-general">
-          <mat-icon>supervisor_account</mat-icon>
-        </div>
-        <div class="content-general">
-          <p>User Management </p>
-        </div>
-      </div>
-      <div class="container-general">
-        <div class="icon-general">
-          <mat-icon>dialer_sip</mat-icon>
-        </div>
-        <div class="content-general">
-          <p>Contact </p>
-        </div>
-      </div>
-      <div class="container-general">
-        <div class="icon-general">
-          <mat-icon>add_shopping_cart</mat-icon>
-        </div>
-        <div class="content-general">
-          <p>Sales Order </p>
-        </div>
-      </div>
-      <div class="container-general">
-        <div class="icon-general">
-          <mat-icon>settings</mat-icon>
-        </div>
-        <div class="content-general">
-          <p>User Profile </p>
-        </div>
-      </div>
-      <div class="container-general">
-        <div class="icon-general">
-          <mat-icon>exit_to_app</mat-icon>
-        </div>
-        <div class="content-general">
-          <p>Logout </p>
-        </div>
-      </div>
+
+
+
     </div>
   </div>
 </div>

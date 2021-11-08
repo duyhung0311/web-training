@@ -2,9 +2,9 @@ const Contacts = require('../models/Contacts');
 const  { mutipleMongooseToObject } = require('../helpers/mongoose');
 const apiResponse = require('../helpers/apiResponse');
 
-/* 
+/*
 ContactsController contains function handlers to handle request from Contacts page.
-It will recieve the data from client, send to its model and vice versa. 
+It will recieve the data from client, send to its model and vice versa.
 This model will interact with database to store or update data.
 */
 class ContactsController {
@@ -18,7 +18,7 @@ class ContactsController {
                     .then(() => {
                         return apiResponse.successResponse(res, 'Add contact successfully');
                     });
-    
+
             }catch(err){
                 return apiResponse.ErrorResponse(res, err);
             }
@@ -96,7 +96,7 @@ class ContactsController {
                     .then(() => {
                         return apiResponse.successResponse(res, 'Delete contact successfully');
                     });
-    
+
             }catch(err){
                 return apiResponse.ErrorResponse(res, err);
             }

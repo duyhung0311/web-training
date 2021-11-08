@@ -1,0 +1,273 @@
+<div class="container">
+  <div class="left-side">
+    <app-menu></app-menu>
+  </div>
+  <div class="right-side">
+    <div class="inner-topic">
+      <div class="flex-center-right-side">
+        <p>SALES ORDER MANAGEMENT</p>
+      </div>
+      <div class="exit-icon">
+        <a nz-popconfirm nzPopconfirmTitle="Are you sure to exit this website?" nzPopconfirmPlacement="bottom"
+          style="display: flex;color:black" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">
+          <mat-icon>exit_to_app</mat-icon>
+          <p>Logout</p>
+        </a>
+      </div>
+    </div>
+    <div class="container-btn">
+      <div style="display:block">
+        <ng-container>
+          <div [ngSwitch]="usArr.isAdmin">
+            <div *ngSwitchCase="true">
+              <div>
+                <button mat-raised-button color="primary" (click)="showModal_createUser()"
+                  class="font-text-content-btn">
+                  <mat-icon>add</mat-icon>
+                  Create
+                </button>
+                <button style="margin-left: 10px;" mat-raised-button color="warn"
+                  (click)="delete_multiple(listIdSelect)" class="font-text-content-btn">
+                  <mat-icon>add</mat-icon>
+                  Delete
+                </button>
+              </div>
+              <div>
+                <div class="btn-search">
+                  <nz-input-group style="width: 25%;" nzSearch [nzAddOnAfter]="suffixIconButton" [formGroup]="form">
+                    <input formControlName="search" type="text" nz-input placeholder="input search text" />
+                  </nz-input-group>
+                  <ng-template #suffixIconButton>
+                    <button (click)="getContactName()" nz-button nzType="primary" nzSearch><i nz-icon
+                        nzType="search"></i></button>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+            <div *ngSwitchCase="false">
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="container-btn">
+      <div [ngSwitch]="usArr.isAdmin">
+        <nz-table #rowSelectionTable [nzData]="salesOrderArr">
+          <thead>
+            <tr>
+              <th *ngSwitchCase="true">
+                <label nz-checkbox (nzCheckedChange)="checkAll()" [(ngModel)]="isCheckAll"></label>
+              </th>
+              <th *ngSwitchCase="false">
+              </th>
+              <!-- <th>
+                <label nz-checkbox (nzCheckedChange)="checkAll()" [(ngModel)]="isCheckAll"></label>
+              </th> -->
+              <th>Subject</th>
+              <th>Contact Name</th>
+              <th>Status</th>
+              <th>Total</th>
+              <th>Assigned To</th>
+              <th>Creator</th>
+              <th *ngSwitchCase="true">
+                <div>Actions</div>
+              </th>
+              <th *ngSwitchCase="false">
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of salesOrderArr">
+              <td *ngSwitchCase="true">
+              <label nz-checkbox (ngModelChange)="checkItem(data._id, data.isCheck)" [(ngModel)]="data.isCheck"></label>
+              </td>
+              <td *ngSwitchCase="false">
+              </td>
+              <!-- <td>
+                <label nz-checkbox (ngModelChange)="checkItem(data._id, data.isCheck)"
+                  [(ngModel)]="data.isCheck"></label>
+              </td> -->
+              <td>{{ data.subject }}</td>
+              <td>{{ data.contactName }}</td>
+              <td>{{ data.status }}</td>
+              <td>{{ data.total }}</td>
+              <td>{{ data.assignedTo }}</td>
+              <td>{{ data.creator }}</td>
+              <td *ngSwitchCase="true">
+                <div style="display:flex">
+                  <button mat-raised-button color="primary" (click)="getByIdSalesOrder(data._id)">Edit
+                  </button>
+                  <a nz-popconfirm nzPopconfirmTitle="Are you want to delete  this sales order?" nzPopconfirmPlacement="bottom"
+                    (nzOnConfirm)="delete_one(data._id)" style="display: flex;color:black" (nzOnCancel)="cancel()">
+                    <button mat-raised-button color="accent" style="margin-left: 15px;">Delete
+                    </button>
+                  </a>
+                </div>
+              </td>
+              <td *ngSwitchCase="false">
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Modal create -->
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Modal Create Sales Order" (nzOnCancel)="handleCancel_createUser()"
+  (nzOnOk)="submit()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="form" (ngSubmit)="submit()">
+      <!-- Creator -->
+      <nz-form-item>
+        <nz-form-label nzFor="creator">Creator</nz-form-label>
+        <nz-select class="select-creator" formControlName="creator">
+          <ng-container *ngFor="let us of userArr">
+            <nz-option [nzLabel]="us.username" [nzValue]="us.username" *ngIf="us.isAdmin==true">
+              {{us.creator}}
+            </nz-option>
+          </ng-container>
+        </nz-select>
+      </nz-form-item>
+      <!-- Subject -->
+      <nz-form-item>
+        <nz-form-label nzFor="name">Subject</nz-form-label>
+        <nz-form-control>
+          <nz-input-group class="subject-input">
+            <input formControlName="subject" nz-input name="name" type="text" id="name">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Contact Name -->
+      <nz-form-item>
+        <nz-form-label nzFor="name">Contact Name</nz-form-label>
+        <nz-form-control>
+          <nz-input-group class="contact-input">
+            <input formControlName="contactName" nz-input name="name" type="text" id="name">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Status -->
+      <nz-form-item>
+        <nz-form-label nzFor="name">Status</nz-form-label>
+        <nz-select formControlName="status" class="status-input">
+          <nz-option nzValue="Created" nzLabel="Created"></nz-option>
+          <nz-option nzValue="Approved" nzLabel="Approved"></nz-option>
+          <nz-option nzValue="Delivered" nzLabel="Delivered"></nz-option>
+          <nz-option nzValue="Cancelled" nzLabel="Cancelled"></nz-option>
+        </nz-select>
+        <!-- <nz-form-control class="salutation-input">
+          <nz-input-group class="padding-input-create-user-name">
+            <input formControlName="status" nz-input name="name" type="text" id="name">
+          </nz-input-group>
+        </nz-form-control> -->
+      </nz-form-item>
+      <!-- Total -->
+      <nz-form-item>
+        <nz-form-label nzFor="phone">Total</nz-form-label>
+        <nz-form-control>
+          <nz-input-group class="total-input">
+            <input formControlName="total" nz-input name="phone" type="number" id="phone">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- assignedTo -->
+      <nz-form-item>
+        <nz-form-label nzFor="isAdmin">Assigned to</nz-form-label>
+        <nz-select class="assign-select" formControlName="assignedTo">
+          <ng-container *ngFor="let us of userArr">
+            <nz-option [nzLabel]="us.username" [nzValue]="us.username" *ngIf="us.isAdmin==false">
+              {{us.username}}
+            </nz-option>
+          </ng-container>
+        </nz-select>
+      </nz-form-item>
+      <!-- Description -->
+      <nz-form-item>
+        <nz-form-label nzFor="isAdmin">Description</nz-form-label>
+        <nz-form-control>
+          <nz-input-group class="description-input">
+            <input formControlName="description" nz-input name="password" id="password">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
+<!-- Modal edit -->
+<nz-modal [(nzVisible)]="isVisible2" nzTitle="Modal Edit Sales Order" (nzOnCancel)="handleCancel_editUser()"
+  *ngFor="let contact of salesOrderArr " (nzOnOk)="submit_edit(contact._id)">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="form">
+      <!-- Creator -->
+      <nz-form-item>
+        <nz-form-label nzFor="username">Creator</nz-form-label>
+        <nz-select formControlName="creator" class="select-creator">
+          <ng-container *ngFor="let us of userArr">
+            <nz-option [nzLabel]="us.username" [nzValue]="us.username" *ngIf="us.isAdmin==true">
+              {{us.creator}}
+            </nz-option>
+          </ng-container>
+        </nz-select>
+      </nz-form-item>
+      <!-- Subject  -->
+      <nz-form-item>
+        <nz-form-label nzFor="name">Subject</nz-form-label>
+        <nz-form-control>
+          <nz-input-group class="subject-input">
+            <input formControlName="subject" nz-input name="name" type="text" id="name">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Contact Name -->
+      <nz-form-item>
+        <nz-form-label nzFor="name">Contact Name</nz-form-label>
+        <nz-form-control>
+          <nz-input-group class="contact-input">
+            <input formControlName="contactName" nz-input name="name" type="text" id="name">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Status -->
+      <nz-form-item>
+        <nz-form-label nzFor="name">Status</nz-form-label>
+        <nz-select formControlName="status" class="status-input">
+          <nz-option nzValue="Created" nzLabel="Created"></nz-option>
+          <nz-option nzValue="Approved" nzLabel="Approved"></nz-option>
+          <nz-option nzValue="Delivered" nzLabel="Delivered"></nz-option>
+          <nz-option nzValue="Cancelled" nzLabel="Cancelled"></nz-option>
+        </nz-select>
+      </nz-form-item>
+      <!-- Total -->
+      <nz-form-item>
+        <nz-form-label nzFor="total">Total</nz-form-label>
+        <nz-form-control>
+          <nz-input-group class="total-input">
+            <input formControlName="total" nz-input name="phone" type="number" id="phone">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- assignedTo -->
+      <nz-form-item>
+        <nz-form-label nzFor="isAdmin">Assigned to</nz-form-label>
+        <nz-select class="assign-select" formControlName="assignedTo">
+          <ng-container *ngFor="let us of userArr">
+            <nz-option [nzLabel]="us.username" [nzValue]="us.username" *ngIf="us.isAdmin==false">
+              {{us.username}}
+            </nz-option>
+          </ng-container>
+        </nz-select>
+      </nz-form-item>
+      <!-- Description -->
+      <nz-form-item>
+        <nz-form-label nzFor="isAdmin">Description</nz-form-label>
+        <nz-form-control>
+          <nz-input-group class="description-input">
+            <input formControlName="description" nz-input name="password" id="password">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
