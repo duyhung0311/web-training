@@ -21,6 +21,7 @@ export class MenuComponent implements OnInit {
   faEnvelope = faEnvelope;
   faPhone = faPhoneVolume;
   faUserCircle = faUserCircle;
+  usArr: any[0] = [];
   user = {
     name: '',
     username: '',
@@ -60,6 +61,8 @@ export class MenuComponent implements OnInit {
     this.auth.getUserProfile().subscribe(
       (res) => {
         this.user = res.data.user;
+        this.usArr=res.data.user;
+        console.log('User Profile of menu', res.data.user);
         this.patchValue(res.data.user);
       },
       (error: any) => {

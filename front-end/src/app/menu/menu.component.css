@@ -64,11 +64,16 @@
 }
 .icon-general{
   width: 10%;
+  color: wheat;
 }
 .content-general{
-  width: 80%;
+  width: 90%;
   font-size: 18px;
   padding-top: 5px;
   color: #626e7b;
+  padding-left: 20px;
 }
-
+.inline-element-menu{
+  width: 100%;
+  display: flex;
+}

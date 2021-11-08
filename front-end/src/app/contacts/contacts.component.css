@@ -12,25 +12,11 @@
   width: 75%;
   height: 100vh;
 }
-
 .inner-topic {
-  width: 100%;
+  width: 90%;
   display: flex;
   border-bottom: 1px solid gray;
   margin-left: 5%;
-}
-.inner-content {
-  width: 100%;
-  display: flex;
-  margin-left: 5%;
-  padding-top: 3%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.flex-center-inco {
-  width: 100%;
 }
 .flex-center-right-side {
   padding-top: 8%;
@@ -52,6 +38,7 @@
   padding-top: 2%;
   width: 90%;
   margin-left: 5%;
+  display: flex;
 }
 .font-text-content-btn {
   font-family: "Montserrat", sans-serif;
@@ -97,20 +84,52 @@ table {
   position: relative;
   right: -1%;
 }
-.input-profile {
-  width: 100%;
-  display: flex;
+.select-creator{
+  width: 86%;
+  padding-left:9% ;
 }
-.input-profile p {
-  width: 30%;
-  font-size: 18px;
-  font-family: "Zen Maru Gothic", sans-serif;
-  color: black;
+.contact-input{
 }
-.input-profile input {
-  margin-left: 15px;
-  width: 60%;
+.salutation-input {
+  padding-left: 27px;
+  width: 82%;
 }
-.login-form {
-  max-width: 300px;
+.mobile-input {
+  padding-left:5px;
+  width: 98%;
+}
+.email-input {
+  width: 97%;
+  padding-left: 13%;
+}
+.organization-input{
+  width: 95%;
+  padding-left: 10px;
+}
+.dob-input {
+   width: 97%;
+  padding-left: 12px;
+}
+.lead-input {
+  width: 78%;
+  padding-left: 12px;
+}
+.assign-select {
+  width: 80%;
+  padding-left: 20px;
+}
+.address-input {
+  width: 99%;
+  padding-left: 10%;
+}
+.description-input {
+  width: 97%;
+  padding-left: 20px;
+}
+.btn-delete{
+  color: white;
+  background-color: #ff4081;
+}
+.btn-search {
+  padding-top: 10px;
 }
