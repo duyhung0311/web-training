@@ -26,6 +26,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { PasswordComponent } from './password/password.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { SalesOrderComponent } from './sales-order/sales-order.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { CommnunicatetionService } from 'src/services/commnunicatetion.service';
+import { FooterComponent } from './footer/footer.component';
 
 
 registerLocaleData(en);
@@ -40,6 +43,7 @@ registerLocaleData(en);
     PasswordComponent,
     ContactsComponent,
     SalesOrderComponent,
+    DashboardComponent,FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -58,6 +62,7 @@ registerLocaleData(en);
     MatSelectModule,
   ],
   providers: [
+    {provide:CommnunicatetionService},
     { provide: NZ_I18N, useValue: en_US },
     {
       provide: HTTP_INTERCEPTORS,

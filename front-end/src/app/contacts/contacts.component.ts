@@ -6,6 +6,9 @@ import { Contacts } from 'src/model/contact.model';
 import { AuthService } from 'src/services/auth.service';
 import { UserService } from 'src/services/user.service';
 import { ContactsService } from 'src/services/contacts.service';
+import { CommnunicatetionService } from 'src/services/commnunicatetion.service';
+import { Router, ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
@@ -16,12 +19,14 @@ export class ContactsComponent implements OnInit {
   selectedValue = null;
   isVisible2 = false;
   checked = false;
+
   loading = false;
   indeterminate = false;
   listOfData: readonly Contacts[] = [];
   listOfCurrentPageData: readonly Contacts[] = [];
   setOfCheckedId = new Set<string>();
   userArr: any[] = [];
+  message2: string;
   userArr1 = new User();
   contactArr: Contacts[] = [];
   contactArr1: Contacts[] = [];
@@ -32,6 +37,10 @@ export class ContactsComponent implements OnInit {
   listIdSelect: string[] = [];
   isCheckAll: boolean = false;
   usArr: any[0] = [];
+  LeadSrc: Contacts;
+  AssignedTo: Contacts;
+  Model: string;
+  result: string[] = [];
   displayedColumns: string[] = [
     'creator',
     'contactName',
@@ -44,7 +53,7 @@ export class ContactsComponent implements OnInit {
   ];
   form_select = new FormGroup({
     selectAssignedTo: new FormControl('', [Validators.required]),
-    selectLeadSrc: new FormControl('', [Validators.required]),
+    selectedValue12: new FormControl('', [Validators.required]),
   });
   form = new FormGroup({
     creator: new FormControl('', [Validators.required]),
@@ -64,13 +73,31 @@ export class ContactsComponent implements OnInit {
     private message: NzMessageService,
     private auth: AuthService,
     private usService: UserService,
-    private contactService: ContactsService
-  ) {}
+    private contactService: ContactsService,
+    private communication: CommnunicatetionService,
+    private router: ActivatedRoute,
+    private router2: Router
+  ) {
+    this.LeadSrc = new Contacts();
+    this.Model = '';
+    this.message2 = '';
+    this.AssignedTo = new Contacts();
+  }
   ngOnInit(): void {
     this.getAllContacts();
     this.getAllUsers();
-    this.listOfData = this.contactArr;
     this.getProfile();
+    this.router.queryParams.subscribe((params) => {
+      console.log(params); // { orderby: "price" }
+      this.form_select.get('selectAssignedTo')?.setValue(params.variable);
+      this.form_select.get('selectedValue12')?.setValue(params.variable2);
+      if (params.variable) {
+        this.selectAssignedTo(params.variable);
+      }
+      if(params.variable2){
+        this.selectLeadSource(params.variable2);
+      }
+    });
   }
   // Table
 
@@ -93,7 +120,6 @@ export class ContactsComponent implements OnInit {
         this.userArr = res.data.users;
         this.userArr1 = res.data.users;
         this.usSelectArr = res.data.users;
-        console.log('Get success when get all user', res.data.users);
       },
       (error: any) => {
         console.log(error);
@@ -222,9 +248,10 @@ export class ContactsComponent implements OnInit {
   }
   // Get all list
   getAllContacts(): void {
+    console.log(this.router2.url);
+    console.log(this.router2.url);
     this.contactService.getAllList().subscribe(
       (res) => {
-        console.log('Contacts list', res);
         this.contactArr = res.data.contacts;
         this.contactArr1 = res.data.contacts;
         this.contactArr = this.contactArr.map((x) => ({
@@ -329,12 +356,12 @@ export class ContactsComponent implements OnInit {
       isAdmin: users.isAdmin?.toString(),
       isActive: users.isActive?.toString(),
     });
-    console.log('Value current user', this.form.value);
+    // console.log('Value current user', this.form.value);
   }
   getProfile(): void {
     this.auth.getUserProfile().subscribe(
       (res) => {
-        console.log('User Profile current user', res.data.user);
+        // console.log('User Profile current user', res.data.user);
         this.patchValue_profile(res.data.user);
         this.usArr = res.data.user;
         window.sessionStorage.setItem('id', res.data.user._id);
@@ -345,10 +372,8 @@ export class ContactsComponent implements OnInit {
     );
   }
   // Print value when press select assigned to
-  selectAssignedTo(): void {
-    console.log(this.form_select.value);
-    let req;
-    let arr = new Array();
+  selectAssignedTo(value?: string): void {
+    console.log(value);
     if (this.form_select.value.selectAssignedTo === null) {
       this.contactService.getAllList().subscribe(
         (res) => {
@@ -364,10 +389,8 @@ export class ContactsComponent implements OnInit {
         (res) => {
           console.log('Contacts list', res.data.contacts);
           const arr = res.data.contacts.filter(
-            (us: any) =>
-              us.assignedTo === this.form_select.value.selectAssignedTo
+            (us: any) => us.assignedTo === value
           );
-          console.log('âssa', arr);
           this.contactArr = arr;
         },
         (error: any) => {
@@ -377,10 +400,12 @@ export class ContactsComponent implements OnInit {
     }
   }
   // Print value when press select lead source
-  selectLeadSource(): void {
-    console.log(this.form_select.value.selectLeadSrc);
-    let arr = new Array();
-    if (this.form_select.value.selectLeadSrc === null) {
+  selectLeadSource(value:string): void {
+    console.log(value)
+    console.log(this.form_select.value.selectedValue12);
+    if (this.form_select.value.selectedValue12 === null) {
+      console.log(this.form_select.value.selectedValue12);
+
       this.contactService.getAllList().subscribe(
         (res) => {
           console.log('Contacts list', res);
@@ -395,9 +420,8 @@ export class ContactsComponent implements OnInit {
         (res) => {
           console.log('Contacts list', res.data.contacts);
           const arr = res.data.contacts.filter(
-            (us: any) => us.leadSrc === this.form_select.value.selectLeadSrc
+            (us: any) => us.leadSrc === value
           );
-          console.log('âssa', arr);
           this.contactArr = arr;
         },
         (error: any) => {
@@ -405,5 +429,12 @@ export class ContactsComponent implements OnInit {
         }
       );
     }
+  }
+  getParamLeadSrc() {
+    this.router.queryParams.subscribe((params) => {
+      console.log(params); // { orderby: "price" }
+      this.LeadSrc = params.leadSrc;
+      console.log(this.LeadSrc); // price
+    });
   }
 }

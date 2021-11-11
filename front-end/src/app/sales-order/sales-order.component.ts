@@ -4,8 +4,10 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { SalesOrder } from 'src/model/sales-order.model';
 import { User } from 'src/model/user.model';
 import { AuthService } from 'src/services/auth.service';
+import { CommnunicatetionService } from 'src/services/commnunicatetion.service';
 import { SalesOrderService } from 'src/services/sales-order.service';
 import { UserService } from 'src/services/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-sales-order',
@@ -19,6 +21,7 @@ export class SalesOrderComponent implements OnInit {
   userArr: any[] = [];
   usSelectArr: any[] = [];
   usArr: any[0] = [];
+  Status: string;
   form_select = new FormGroup({
     selectAssignedTo: new FormControl('', [Validators.required]),
     selectStatus: new FormControl('', [Validators.required]),
@@ -58,13 +61,23 @@ export class SalesOrderComponent implements OnInit {
     private message: NzMessageService,
     private auth: AuthService,
     private salesOrderService: SalesOrderService,
-    private usService: UserService
-  ) {}
+    private usService: UserService,
+    private communication: CommnunicatetionService,
+    private router: ActivatedRoute
+  ) {
+    this.Status = '';
+  }
 
   ngOnInit(): void {
     this.getAllSalesOrder();
     this.getAllUsers();
     this.getProfile();
+    this.router.queryParams.subscribe((params) => {
+      this.form_select.get('selectStatus')?.setValue(params.status);
+      if (params.variable) {
+        this.selectStatus(params.status);
+      }
+    });
   }
   cancel(): void {
     this.message.info('click cancel');
@@ -350,32 +363,33 @@ export class SalesOrderComponent implements OnInit {
       );
     }
   }
-  selectStatus(): void{
+  selectStatus(value: string): void {
+    console.log(value);
     console.log(this.form_select.value.selectStatus);
-     if (this.form_select.value.selectStatus === null) {
-       this.salesOrderService.getAllList().subscribe(
-         (res) => {
-           console.log('Sales order list', res.data.salesOrder);
-           this.salesOrderArr = res.data.salesOrder;
-         },
-         (error: any) => {
-           console.log(error);
-         }
-       );
-     } else {
-       this.salesOrderService.getAllList().subscribe(
-         (res) => {
-           console.log('Sales order list', res.data.salesOrder);
-           const arr = res.data.salesOrder.filter(
-             (us: any) => us.status === this.form_select.value.selectStatus
-           );
-           console.log('âssa', arr);
-           this.salesOrderArr = arr;
-         },
-         (error: any) => {
-           console.log(error);
-         }
-       );
-     }
+    if (this.form_select.value.selectStatus === null) {
+      this.salesOrderService.getAllList().subscribe(
+        (res) => {
+          console.log('Sales order list', res.data.salesOrder);
+          this.salesOrderArr = res.data.salesOrder;
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    } else {
+      this.salesOrderService.getAllList().subscribe(
+        (res) => {
+          console.log('Sales order list', res.data.salesOrder);
+          const arr = res.data.salesOrder.filter(
+            (us: any) => us.status === value
+          );
+          console.log('âssa', arr);
+          this.salesOrderArr = arr;
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    }
   }
 }
