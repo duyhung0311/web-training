@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
       if ((res.status = 1)) {
         this.form_login.reset();
         this.message.success('Login successfully');
-        this.router.navigate(['contacts']);
+        this.router.navigate(['dashboard']);
       }
       else {
         this.message.error('Login failed')

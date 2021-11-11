@@ -1,20 +1,20 @@
 .container {
   width: 100%;
-  height: auto;
+  height: 100vh;
   display: flex;
 }
 .left-side {
   width: 25%;
-  height: 100vh;
+  height: auto;
   background-color: #31353d;
 }
 .right-side {
   width: 75%;
-  height: 100vh;
+  height: auto;
 }
 
 .inner-topic {
-  width: 100%;
+  width: 90%;
   display: flex;
   border-bottom: 1px solid gray;
   margin-left: 5%;

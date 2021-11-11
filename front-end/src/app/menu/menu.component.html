@@ -48,12 +48,14 @@
       <div class="container-general" [ngSwitch]="usArr.isAdmin">
         <div *ngSwitchCase="true">
           <div class="inline-element-menu">
-            <div class="icon-general">
-              <mat-icon>dashboard</mat-icon>
-            </div>
-            <div class="content-general">
-              <p>Dashboard</p>
-            </div>
+            <a routerLink="/dashboard" class="container-general">
+              <div class="icon-general">
+                <mat-icon>dashboard</mat-icon>
+              </div>
+              <div class="content-general">
+                <p>Dashboard</p>
+              </div>
+            </a>
           </div>
           <div class="inline-element-menu">
             <a routerLink="/user" class="container-general">
@@ -108,12 +110,14 @@
         </div>
         <div *ngSwitchCase="false">
           <div class="inline-element-menu">
-            <div class="icon-general">
-              <mat-icon>dashboard</mat-icon>
-            </div>
-            <div class="content-general">
-              <p>Dashboard</p>
-            </div>
+            <a routerLink="/dashboard" class="container-general">
+              <div class="icon-general">
+                <mat-icon>dashboard</mat-icon>
+              </div>
+              <div class="content-general">
+                <p>Dashboard</p>
+              </div>
+            </a>
           </div>
           <div class="inline-element-menu">
             <a routerLink="/contacts" class="container-general">
@@ -157,8 +161,6 @@
           </div>
         </div>
       </div>
-
-
 
     </div>
   </div>

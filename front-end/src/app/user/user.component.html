@@ -84,6 +84,9 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
+    <div style="margin-top: 17%">
+      <app-footer></app-footer>
+    </div>
   </div>
 </div>
 
@@ -133,11 +136,13 @@
         <nz-form-label nzFor="password">Password</nz-form-label>
         <nz-form-control>
           <nz-input-group class="padding-input-create-user-password " [nzSuffix]="suffixTemplate">
-            <input [type]="passwordVisible ? 'text' : 'password'" formControlName="password" nz-input name="password" type="password" id="password">
+            <input [type]="passwordVisible ? 'text' : 'password'" formControlName="password" nz-input name="password"
+              type="password" id="password">
             <!-- <input formControlName="password" nz-input name="password" type="password" id="password"> -->
           </nz-input-group>
           <ng-template #suffixTemplate>
-            <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+            <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+              (click)="passwordVisible = !passwordVisible"></i>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
@@ -206,11 +211,13 @@
         <nz-form-label nzFor="password">Password</nz-form-label>
         <nz-form-control>
           <nz-input-group class="padding-input-create-user-password " [nzSuffix]="suffixTemplate">
-            <input [type]="passwordVisible ? 'text' : 'password'" formControlName="password" nz-input name="password" type="password" id="password">
+            <input [type]="passwordVisible ? 'text' : 'password'" formControlName="password" nz-input name="password"
+              type="password" id="password">
             <!-- <input formControlName="password" nz-input name="password" type="password" id="password"> -->
           </nz-input-group>
           <ng-template #suffixTemplate>
-            <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+            <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+              (click)="passwordVisible = !passwordVisible"></i>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
