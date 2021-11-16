@@ -1,9 +1,9 @@
 .container{
   width: 100%;
   border-top: 1px solid lightgray;
-  padding: 3% 0px;
+  padding: 10px 0px;
   display: flex;
-  font-size: 18px;
+  font-size: 15px;
   height: auto;
 }
 .left-side{

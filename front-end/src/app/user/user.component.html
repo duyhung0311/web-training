@@ -84,12 +84,11 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
-    <div style="margin-top: 17%">
-      <app-footer></app-footer>
-    </div>
   </div>
 </div>
-
+<div style="background-color: lightgray;">
+  <app-footer></app-footer>
+</div>
 <!-- Modal edit -->
 <nz-modal [(nzVisible)]="isVisible2" nzTitle="Modal Edit" (nzOnCancel)="handleCancel_editUser()"
   *ngFor="let us of userArr" (nzOnOk)="submit_edit(us._id)">

@@ -195,12 +195,6 @@ export class DashboardComponent implements OnInit {
       queryParams: { variable2: this.leadSrc },
     });
   }
-  getSelectedAssignedName(variable: any): void {
-    this.variable = variable;
-    this.router.navigate(['contacts'], {
-      queryParams: { variable2: this.variable },
-    });
-  }
   getSelectedSalesOrder(status: SalesOrder): void {
     this.status = status;
     this.router.navigate(['sales-order'], {

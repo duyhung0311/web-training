@@ -73,8 +73,9 @@ export class SalesOrderComponent implements OnInit {
     this.getAllUsers();
     this.getProfile();
     this.router.queryParams.subscribe((params) => {
+      this.Status=params.status
       this.form_select.get('selectStatus')?.setValue(params.status);
-      if (params.variable) {
+      if (params.status) {
         this.selectStatus(params.status);
       }
     });
