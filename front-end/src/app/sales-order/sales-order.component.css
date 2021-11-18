@@ -116,3 +116,6 @@ table {
   width: 100%;
   display: flex;
 }
+.select-contact{
+  width: 78%;
+}

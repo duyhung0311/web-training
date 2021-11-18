@@ -1,10 +1,10 @@
 <div [ngSwitch]="usArr.isAdmin">
   <div *ngSwitchCase="true">
-      <div class="container">
+      <div class="container" >
         <div class="left-side">
           <app-menu></app-menu>
         </div>
-        <div class="right-side" style="height: 100vh;width: 75vw;">
+        <div class="right-side" >
           <div class="inner-topic">
             <div class="flex-center-right-side">
               <p>SALES ORDER MANAGEMENT</p>
@@ -47,7 +47,7 @@
                         <div style="width: 15%; margin-left: 10px;">
                           <form nz-form [formGroup]="form_select">
                             <nz-select style="width: 150px;" nzAllowClear nzPlaceHolder="Select assigned user"
-                              formControlName="selectAssignedTo" (ngModelChange)=" selectAssignedTo()">
+                              formControlName="selectAssignedTo" (ngModelChange)=" selectAssignedTo($event)">
                               <ng-container *ngFor="let us of usSelectArr">
                                 <nz-option [nzLabel]="us.username" [nzValue]="us.username" *ngIf="us.isAdmin==false">
                                   {{us.username}}
@@ -101,7 +101,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let data of salesOrderArr">
+                  <tr *ngFor="let data of rowSelectionTable.data">
                     <td *ngSwitchCase="true">
                       <label nz-checkbox (ngModelChange)="checkItem(data._id, data.isCheck)"
                         [(ngModel)]="data.isCheck"></label>
@@ -186,7 +186,7 @@
                       <div style="width: 15%; margin-left: 10px;">
                         <form nz-form [formGroup]="form_select">
                           <nz-select style="width: 150px;" nzAllowClear nzPlaceHolder="Select assigned user"
-                            formControlName="selectAssignedTo" (ngModelChange)=" selectAssignedTo()">
+                            formControlName="selectAssignedTo" (ngModelChange)=" selectAssignedTo($event)">
                             <ng-container *ngFor="let us of usSelectArr">
                               <nz-option [nzLabel]="us.username" [nzValue]="us.username" *ngIf="us.isAdmin==false">
                                 {{us.username}}
@@ -240,7 +240,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let data of salesOrderArr">
+                <tr *ngFor="let data of rowSelectionTable.data">
                   <td *ngSwitchCase="true">
                     <label nz-checkbox (ngModelChange)="checkItem(data._id, data.isCheck)"
                       [(ngModel)]="data.isCheck"></label>
@@ -291,7 +291,7 @@
         <nz-form-label nzFor="creator">Creator</nz-form-label>
         <nz-select class="select-creator" formControlName="creator">
           <ng-container *ngFor="let us of userArr">
-            <nz-option [nzLabel]="us.username" [nzValue]="us.username" *ngIf="us.isAdmin==true">
+            <nz-option [nzLabel]="us.username" [nzValue]="us.username" >
               {{us.creator}}
             </nz-option>
           </ng-container>
@@ -309,11 +309,13 @@
       <!-- Contact Name -->
       <nz-form-item>
         <nz-form-label nzFor="name">Contact Name</nz-form-label>
-        <nz-form-control>
-          <nz-input-group class="contact-input">
-            <input formControlName="contactName" nz-input name="name" type="text" id="name">
-          </nz-input-group>
-        </nz-form-control>
+        <nz-select class="select-contact" formControlName="contactName">
+          <ng-container *ngFor="let us of arrContactName">
+            <nz-option [nzLabel]="us.contactName" [nzValue]="us.contactName">
+              {{us.contactName}}
+            </nz-option>
+          </ng-container>
+        </nz-select>
       </nz-form-item>
       <!-- Status -->
       <nz-form-item>
@@ -344,7 +346,7 @@
         <nz-form-label nzFor="isAdmin">Assigned to</nz-form-label>
         <nz-select class="assign-select" formControlName="assignedTo">
           <ng-container *ngFor="let us of userArr">
-            <nz-option [nzLabel]="us.username" [nzValue]="us.username" *ngIf="us.isAdmin==false">
+            <nz-option [nzLabel]="us.username" [nzValue]="us.username" >
               {{us.username}}
             </nz-option>
           </ng-container>
@@ -364,7 +366,7 @@
 </nz-modal>
 <!-- Modal edit -->
 <nz-modal [(nzVisible)]="isVisible2" nzTitle="Modal Edit Sales Order" (nzOnCancel)="handleCancel_editUser()"
-  *ngFor="let contact of salesOrderArr " (nzOnOk)="submit_edit(contact._id)">
+  (nzOnOk)="submit_edit(arr_edit)">
   <ng-container *nzModalContent>
     <form nz-form [formGroup]="form">
       <!-- Creator -->
@@ -372,7 +374,7 @@
         <nz-form-label nzFor="username">Creator</nz-form-label>
         <nz-select formControlName="creator" class="select-creator">
           <ng-container *ngFor="let us of userArr">
-            <nz-option [nzLabel]="us.username" [nzValue]="us.username" *ngIf="us.isAdmin==true">
+            <nz-option [nzLabel]="us.username" [nzValue]="us.username" >
               {{us.creator}}
             </nz-option>
           </ng-container>
@@ -390,11 +392,13 @@
       <!-- Contact Name -->
       <nz-form-item>
         <nz-form-label nzFor="name">Contact Name</nz-form-label>
-        <nz-form-control>
-          <nz-input-group class="contact-input">
-            <input formControlName="contactName" nz-input name="name" type="text" id="name">
-          </nz-input-group>
-        </nz-form-control>
+        <nz-select class="select-contact" formControlName="contactName">
+          <ng-container *ngFor="let us of arrContactName">
+            <nz-option [nzLabel]="us.contactName" [nzValue]="us.contactName">
+              {{us.contactName}}
+            </nz-option>
+          </ng-container>
+        </nz-select>
       </nz-form-item>
       <!-- Status -->
       <nz-form-item>
@@ -420,7 +424,7 @@
         <nz-form-label nzFor="isAdmin">Assigned to</nz-form-label>
         <nz-select class="assign-select" formControlName="assignedTo">
           <ng-container *ngFor="let us of userArr">
-            <nz-option [nzLabel]="us.username" [nzValue]="us.username" *ngIf="us.isAdmin==false">
+            <nz-option [nzLabel]="us.username" [nzValue]="us.username" >
               {{us.username}}
             </nz-option>
           </ng-container>

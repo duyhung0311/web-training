@@ -9,7 +9,13 @@ import { CommnunicatetionService } from 'src/services/commnunicatetion.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from 'src/model/user.model';
-
+import { ChartType, ChartOptions } from 'chart.js';
+import {
+  SingleDataSet,
+  Label,
+  monkeyPatchChartJsLegend,
+  monkeyPatchChartJsTooltip,
+} from 'ng2-charts';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -27,6 +33,12 @@ export class DashboardComponent implements OnInit {
   objectDemoNext: any[] = [];
   arrAfterClicked: any[] = [];
   arr: any[] = [];
+  newArr: any[] = [];
+  newArr_after: any[] = [];
+  keyArr: any[] = [];
+  valueArr: any[] = [];
+  keyArrStatus: any[] = [];
+  valueArrStatus: any[] = [];
   leadSrc: any;
   user = {
     name: '',
@@ -61,6 +73,21 @@ export class DashboardComponent implements OnInit {
     isAdmin: new FormControl(false),
     isActive: new FormControl(false),
   });
+  // pieChart p1
+  public pieChartOptions: ChartOptions = {
+    responsive: true,
+  };
+  public pieChartLabels: Label[] = this.keyArr;
+  public pieChartData: SingleDataSet = this.valueArr;
+  public pieChartType: ChartType = 'pie';
+  public pieChartLegend = true;
+  public pieChartPlugins = [];
+  //pie chart p2
+  public pieChartOptions_2: ChartOptions = {
+    responsive: true,
+  };
+  public pieChartLabels_second: Label[] = this.keyArrStatus;
+  public pieChartData_second: SingleDataSet = this.valueArrStatus;
   constructor(
     private message: NzMessageService,
     private auth: AuthService,
@@ -113,6 +140,20 @@ export class DashboardComponent implements OnInit {
           return r;
         }, Object.create(null));
         this.objectDemoNext = Object.keys(result);
+        for (let x in result) {
+          this.newArr_after.push({ [x]: result[x].length });
+        }
+        console.log(this.newArr_after);
+        for (var i = 0, l = this.newArr_after.length; i < l; i++) {
+          var items = this.newArr_after[i];
+          var keys = Object.keys(items);
+          for (var j = 0, k = keys.length; j < k; j++) {
+            console.log(keys[j], items[keys[j]]);
+            this.keyArrStatus.push(keys[j]);
+            this.valueArrStatus.push(items[keys[j]]);
+            console.log(this.keyArrStatus,this.valueArrStatus)
+          }
+        }
       },
       (error: any) => {
         console.log(error);
@@ -135,6 +176,21 @@ export class DashboardComponent implements OnInit {
         this.contactArr = res.data.contacts;
         this.objectDemo1 = result;
         this.objectDemo = Object.keys(result);
+        for (let x in result) {
+          this.newArr.push({ [x]: result[x].length });
+        }
+        //  this.newArr.forEach((k,v)=>
+        //  console.log("Key is" + this.Object,))
+        console.log(this.newArr);
+        for (var i = 0, l = this.newArr.length; i < l; i++) {
+          var items = this.newArr[i];
+          var keys = Object.keys(items);
+          for (var j = 0, k = keys.length; j < k; j++) {
+            console.log(keys[j], items[keys[j]]);
+            this.keyArr.push(keys[j]);
+            this.valueArr.push(items[keys[j]]);
+          }
+        }
       },
       (error: any) => {
         console.log(error);
@@ -143,7 +199,7 @@ export class DashboardComponent implements OnInit {
   }
   getAllNewSalesOrder(): void {
     var dateDemo: any;
-    dateDemo = new Date('2021-11-05');
+    dateDemo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     this.salesOrderService.getAllList().subscribe(
       (res) => {
         console.log(res.data.salesOrder);
@@ -160,7 +216,7 @@ export class DashboardComponent implements OnInit {
   }
   getAllNewContact(): void {
     var dateDemo: any;
-    dateDemo = new Date('2021-11-08T03:08:55.748Z');
+    dateDemo = new Date(Date.now() - 1 * 24 * 60 * 60 * 1000);
     var result = dateDemo.toISOString();
     console.log(result);
     this.contactService.getAllList().subscribe(
@@ -178,6 +234,9 @@ export class DashboardComponent implements OnInit {
     );
   }
   handleCount(value: string) {
+    const x = this.contactArr.filter((x) => x.leadSrc === value).length;
+    const arr = [];
+    arr.push(x);
     return this.contactArr.filter((x) => x.leadSrc === value).length;
   }
   handleCount_salesOrder(value: string) {
@@ -214,7 +273,7 @@ export class DashboardComponent implements OnInit {
       (res) => {
         console.log('User Profile current user', res.data.user);
         this.patchValue(res.data.user);
-        this.user=res.data.user
+        this.user = res.data.user;
         window.sessionStorage.setItem('id', res.data.user._id);
       },
       (error: any) => {

@@ -37,86 +37,13 @@ export class ContactsComponent implements OnInit {
   listIdSelect: string[] = [];
   isCheckAll: boolean = false;
   usArr: any[0] = [];
-  listOfData: any[] = [
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-    },
-    {
-      key: '4',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-    },
-    {
-      key: '5',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    },
-    {
-      key: '6',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-    },
-    {
-      key: '7',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-    },
-    {
-      key: '8',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    },
-    {
-      key: '9',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-    },
-    {
-      key: '10',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-    },
-    {
-      key: '11',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    },
-    {
-      key: '12',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-    },
-  ];
   LeadSrc: Contacts;
   AssignedTo: Contacts;
   Model: string;
   result: string[] = [];
   var1: string;
   var2: string;
+  arr_edit:string ;
   displayedColumns: string[] = [
     'creator',
     'contactName',
@@ -136,7 +63,7 @@ export class ContactsComponent implements OnInit {
     contactName: new FormControl('', [Validators.required]),
     salutation: new FormControl('', [Validators.required]),
     mobilePhone: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
     organization: new FormControl('', [Validators.required]),
     dob: new FormControl('', [Validators.required]),
     leadSrc: new FormControl('', [Validators.required]),
@@ -160,6 +87,7 @@ export class ContactsComponent implements OnInit {
     this.AssignedTo = new Contacts();
     this.var1 = '';
     this.var2 = '';
+    this.arr_edit=''
   }
   ngOnInit(): void {
     this.getAllContacts();
@@ -190,6 +118,7 @@ export class ContactsComponent implements OnInit {
   }
   showModal_createUser(): void {
     this.isVisible = true;
+    this.form.reset()
   }
   showModal_edit(): void {
     this.isVisible2 = true;
@@ -236,18 +165,23 @@ export class ContactsComponent implements OnInit {
     console.log(this.form.value);
   }
   editContact(idSelected: string) {
+    console.log(idSelected)
+    this.arr_edit=idSelected
     this.contactService.getById(idSelected).subscribe(
       (res) => {
+        console.log(idSelected)
         this.patchValue(res.data.contact);
         console.log(res, 'Response when get by id contact');
-        idSelected = res.data.contact._id;
+        this.arr_edit=idSelected
+        console.log(this.arr_edit)
       },
       (error: any) => {
         console.log(error);
       }
     );
-    console.log('idSelected', idSelected);
-    return idSelected;
+    console.log(this.arr_edit)
+    // return idSelected;
+    return this.arr_edit
   }
   patchValue(contacts: Contacts) {
     this.form.patchValue({
@@ -289,7 +223,7 @@ export class ContactsComponent implements OnInit {
   submit_edit(id2: string): void {
     console.log('value input', this.form.value);
     let idAr = this.editContact(id2);
-    console.log(this.contactArr, '/update');
+    console.log(idAr, '/update');
     console.log('idSelected after open modal', idAr);
     this.contactService.update(idAr, this.form.value).subscribe(
       (res) => {
@@ -394,25 +328,29 @@ export class ContactsComponent implements OnInit {
   }
   delete_multiple(id: string[] = []): void {
     id = this.listIdSelect;
-    this.contactService.delete_multiple(id).subscribe(
-      (res) => {
-        console.log('Delete multiple successfully contact', res);
-        if ((res.status = 1)) {
-          this.message.success('Delete contacts you clicked was successful');
-          this.getAllContacts();
-        }
-      },
-      (error: any) => {
-        console.log(error);
-      }
-    );
+    id.length === 0
+      ? this.message.warning(
+          'Please choose at the radio of contact and then system can delete it!'
+        )
+      : this.contactService.delete_multiple(id).subscribe(
+          (res) => {
+            console.log('Delete multiple successfully contact', res);
+            if ((res.status = 1)) {
+              this.message.success(
+                'Delete contacts you clicked was successful'
+              );
+              this.getAllContacts();
+            }
+          },
+          (error: any) => {
+            console.log(error);
+          }
+        );
   }
   // Get contact name
   getContactName(): void {
     console.log(this.form.value.search);
-    if (this.form.value.search === '') {
-      this.getAllContacts();
-    } else {
+    this.form.value.search === ''?this.getAllContacts():
       this.contactService.getContactName(this.form.value.search).subscribe(
         (res) => {
           console.log('Find contact name righly', res.data.contacts);
@@ -422,7 +360,6 @@ export class ContactsComponent implements OnInit {
           console.log('Error', error);
         }
       );
-    }
   }
   // GetProfile
   // get Profile\
@@ -454,61 +391,22 @@ export class ContactsComponent implements OnInit {
   // Print value when press select assigned to
   selectAssignedTo(value?: string): void {
     console.log(value);
-    if (this.form_select.value.selectAssignedTo === null) {
-      this.contactService.getAllList().subscribe(
-        (res) => {
-          console.log('Contacts list', res);
-          this.contactArr = res.data.contacts;
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
-    } else {
-      this.contactService.getAllList().subscribe(
-        (res) => {
-          console.log('Contacts list', res.data.contacts);
-          const arr = res.data.contacts.filter(
-            (us: any) => us.assignedTo === value
-          );
-          this.contactArr = arr;
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
-    }
+     var data: any;
+     value === null
+       ? this.getAllContacts()
+       : (data = this.contactArr.filter((us: any) => us.assignedTo === value));
+     this.contactArr = data;
   }
   // Print value when press select lead source
   selectLeadSource(value: string): void {
     console.log(value);
-    console.log(this.form_select.value.selectedValue12);
-    if (this.form_select.value.selectedValue12 === null) {
-      console.log(this.form_select.value.selectedValue12);
-
-      this.contactService.getAllList().subscribe(
-        (res) => {
-          console.log('Contacts list', res);
-          this.contactArr = res.data.contacts;
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
-    } else {
-      this.contactService.getAllList().subscribe(
-        (res) => {
-          console.log('Contacts list', res.data.contacts);
-          const arr = res.data.contacts.filter(
-            (us: any) => us.leadSrc === value
-          );
-          this.contactArr = arr;
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
-    }
+    var data:any
+    value === null
+      ?this.getAllContacts():
+      data=this.contactArr.filter(
+         (us: any) => us.leadSrc === value
+      )
+      this.contactArr=data
   }
   getParamLeadSrc() {
     this.router.queryParams.subscribe((params) => {

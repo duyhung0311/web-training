@@ -26,6 +26,7 @@ export class UserComponent implements OnInit {
   faCoffee = faCoffee;
   passwordVisible = false;
   password?: string;
+  arr_edit: string;
   displayedColumns: string[] = [
     'name',
     'username',
@@ -46,12 +47,32 @@ export class UserComponent implements OnInit {
     private message: NzMessageService,
     private auth: AuthService
   ) {
-    this.getProfile();
+    this.arr_edit = '';
   }
   ngOnInit(): void {
     this.getAllUsers();
-    this.getProfile();
   }
+  form_222 = new FormGroup({
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(20),
+    ]),
+    username: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(20),
+    ]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+      Validators.maxLength(40),
+    ]),
+    phone: new FormControl('', [Validators.required]),
+    isAdmin: new FormControl(false),
+    isActive: new FormControl(false),
+  });
   form = new FormGroup({
     name: new FormControl('', [
       Validators.required,
@@ -85,7 +106,7 @@ export class UserComponent implements OnInit {
     this.usService.get().subscribe(
       (res) => {
         this.userArr = res.data.users;
-        console.log(this.userArr);
+        console.log(res);
         console.log('Get success');
       },
       (error: any) => {
@@ -93,18 +114,9 @@ export class UserComponent implements OnInit {
       }
     );
   }
-  getProfile(): void {
-    this.auth.getUserProfile().subscribe(
-      (res) => {
-        console.log('User Profile current user', res);
-      },
-      (error: any) => {
-        console.log('Error user profile', error);
-      }
-    );
-  }
   showModal_createUser(): void {
     this.isVisible = true;
+    this.form_222.reset();
   }
   handleOk_createUser(): void {
     console.log('Button ok clicked!');
@@ -123,6 +135,7 @@ export class UserComponent implements OnInit {
     this.isVisible2 = false;
   }
   editUser(idSelected: string) {
+    this.arr_edit = idSelected;
     this.usService.getById(idSelected).subscribe(
       (res) => {
         console.log(res.data.user._id, 'id');
@@ -138,7 +151,7 @@ export class UserComponent implements OnInit {
     return idSelected;
   }
   patchValue(users: User) {
-    this.form.patchValue({
+    this.form_222.patchValue({
       name: users.name,
       username: users.username,
       email: users.email,
@@ -147,12 +160,12 @@ export class UserComponent implements OnInit {
       isAdmin: users.isAdmin?.toString(),
       isActive: users.isActive?.toString(),
     });
-    console.log(this.form.value);
+    console.log(this.form_222.value);
     this.isVisible2 = true;
   }
   submit(): void {
     console.log(this.form.value);
-    this.usService.create(this.form.value).subscribe(
+    this.usService.create(this.form_222.value).subscribe(
       (res) => {
         console.log(res);
         console.log('thanh cong');
@@ -168,11 +181,11 @@ export class UserComponent implements OnInit {
     );
   }
   submit_edit(id2: string): void {
-    console.log('value input', this.form.value);
+    console.log('value input', this.form_222.value);
     let idAr = this.editUser(id2);
     console.log(this.userArr, '/update');
     console.log('idSelected after open modal', idAr);
-    this.usService.update(idAr, this.form.value).subscribe(
+    this.usService.update(idAr, this.form_222.value).subscribe(
       (res) => {
         console.log(res, 'RESPONSE');
         if ((res.message = 'Success')) {
@@ -185,15 +198,5 @@ export class UserComponent implements OnInit {
         console.log(error);
       }
     );
-    // this.usService.update(this.userArr._id,this.userArr).subscribe(
-    //   (res) => {
-    //     console.log(res);
-    //     console.log('thanh cong');
-
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //   }
-    // );
   }
 }

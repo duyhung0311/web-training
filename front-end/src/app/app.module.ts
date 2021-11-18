@@ -29,6 +29,7 @@ import { SalesOrderComponent } from './sales-order/sales-order.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CommnunicatetionService } from 'src/services/commnunicatetion.service';
 import { FooterComponent } from './footer/footer.component';
+import { ChartsModule } from 'ng2-charts';
 
 
 registerLocaleData(en);
@@ -43,7 +44,8 @@ registerLocaleData(en);
     PasswordComponent,
     ContactsComponent,
     SalesOrderComponent,
-    DashboardComponent,FooterComponent
+    DashboardComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,9 +62,10 @@ registerLocaleData(en);
     ReactiveFormsModule,
     DemoNgZorroAntdModule,
     MatSelectModule,
+    ChartsModule,
   ],
   providers: [
-    {provide:CommnunicatetionService},
+    { provide: CommnunicatetionService },
     { provide: NZ_I18N, useValue: en_US },
     {
       provide: HTTP_INTERCEPTORS,
