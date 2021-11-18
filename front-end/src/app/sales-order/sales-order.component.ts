@@ -8,6 +8,7 @@ import { CommnunicatetionService } from 'src/services/commnunicatetion.service';
 import { SalesOrderService } from 'src/services/sales-order.service';
 import { UserService } from 'src/services/user.service';
 import { ActivatedRoute } from '@angular/router';
+import { ContactsService } from 'src/services/contacts.service';
 
 @Component({
   selector: 'app-sales-order',
@@ -20,7 +21,9 @@ export class SalesOrderComponent implements OnInit {
   salesOrderArr: any[] = [];
   userArr: any[] = [];
   usSelectArr: any[] = [];
+  arrContactName: any[] = [];
   usArr: any[0] = [];
+  arr_edit: string;
   Status: string;
   form_select = new FormGroup({
     selectAssignedTo: new FormControl('', [Validators.required]),
@@ -63,17 +66,20 @@ export class SalesOrderComponent implements OnInit {
     private salesOrderService: SalesOrderService,
     private usService: UserService,
     private communication: CommnunicatetionService,
-    private router: ActivatedRoute
+    private router: ActivatedRoute,
+    private contactUS: ContactsService
   ) {
     this.Status = '';
+    this.arr_edit = '';
   }
 
   ngOnInit(): void {
     this.getAllSalesOrder();
     this.getAllUsers();
     this.getProfile();
+    this.getAllContactName();
     this.router.queryParams.subscribe((params) => {
-      this.Status=params.status
+      this.Status = params.status;
       this.form_select.get('selectStatus')?.setValue(params.status);
       if (params.status) {
         this.selectStatus(params.status);
@@ -90,6 +96,7 @@ export class SalesOrderComponent implements OnInit {
   }
   showModal_createUser(): void {
     this.isVisible = true;
+    this.form.reset();
   }
   getAllSalesOrder(): void {
     this.salesOrderService.getAllList().subscribe(
@@ -152,6 +159,7 @@ export class SalesOrderComponent implements OnInit {
   }
   // Get by id
   getByIdSalesOrder(idSelected: string) {
+    this.arr_edit = idSelected;
     this.salesOrderService.getById(idSelected).subscribe(
       (res) => {
         this.patchValue(res.data.saleOrder);
@@ -276,36 +284,53 @@ export class SalesOrderComponent implements OnInit {
     console.log(this.listIdSelect);
   }
   delete_multiple(id: string[] = []): void {
+    console.log(id);
     id = this.listIdSelect;
-    this.salesOrderService.delete_multiple(id).subscribe(
+    id.length === 0
+      ? this.message.warning(
+          'Please choose at the radio of sales order and then system can delete it!'
+        )
+      : this.salesOrderService.delete_multiple(id).subscribe(
+          (res) => {
+            console.log('Delete multiple successfully sales order', res);
+            if ((res.status = 1)) {
+              this.message.success(
+                'Delete sales order you clicked was successful'
+              );
+              this.getAllSalesOrder();
+            }
+          },
+          (error: any) => {
+            console.log(error);
+          }
+        );
+  }
+  // get contact name
+  getContactName(): void {
+    console.log(this.form.value.search);
+    this.form.value.search === ''
+      ? this.getAllSalesOrder()
+      : this.salesOrderService.getContactName(this.form.value.search).subscribe(
+          (res) => {
+            console.log('Find contact name rightly', res.data.salesOrder);
+            this.salesOrderArr = res.data.salesOrder;
+          },
+          (error: any) => {
+            console.log('Error', error);
+          }
+        );
+  }
+  // get All contact
+  getAllContactName(): void {
+    this.contactUS.getAllList().subscribe(
       (res) => {
-        console.log('Delete multiple successfully sales order', res);
-        if ((res.status = 1)) {
-          this.message.success('Delete sales order you clicked was successful');
-          this.getAllSalesOrder();
-        }
+        this.arrContactName = res.data.contacts;
+        console.log('Get all contacts name', res.data.contacts);
       },
       (error: any) => {
         console.log(error);
       }
     );
-  }
-  // get contact name
-  getContactName(): void {
-    console.log(this.form.value.search);
-    if (this.form.value.search === '') {
-      this.getAllSalesOrder();
-    } else {
-      this.salesOrderService.getContactName(this.form.value.search).subscribe(
-        (res) => {
-          console.log('Find contact name rightly', res.data.salesOrder);
-          this.salesOrderArr = res.data.salesOrder;
-        },
-        (error: any) => {
-          console.log('Error', error);
-        }
-      );
-    }
   }
   // get Profile\
   patchValue_profile(users: User) {
@@ -333,64 +358,20 @@ export class SalesOrderComponent implements OnInit {
       }
     );
   }
-  selectAssignedTo(): void {
-    console.log(this.form_select.value);
-    let req;
-    let arr = new Array();
-    if (this.form_select.value.selectAssignedTo === null) {
-      this.salesOrderService.getAllList().subscribe(
-        (res) => {
-          console.log('Sales order list', res);
-          this.salesOrderArr = res.data.salesOrder;
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
-    } else {
-      this.salesOrderService.getAllList().subscribe(
-        (res) => {
-          console.log('Sales order list', res.data.salesOrder);
-          const arr = res.data.salesOrder.filter(
-            (us: any) =>
-              us.assignedTo === this.form_select.value.selectAssignedTo
-          );
-          console.log('âssa', arr);
-          this.salesOrderArr = arr;
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
-    }
+  selectAssignedTo(value?: string): void {
+     console.log(value);
+     var data: any;
+     value === null
+       ? this.getAllSalesOrder()
+       : (data = this.salesOrderArr.filter((us: any) => us.assignedTo === value));
+     this.salesOrderArr = data;
   }
   selectStatus(value: string): void {
     console.log(value);
-    console.log(this.form_select.value.selectStatus);
-    if (this.form_select.value.selectStatus === null) {
-      this.salesOrderService.getAllList().subscribe(
-        (res) => {
-          console.log('Sales order list', res.data.salesOrder);
-          this.salesOrderArr = res.data.salesOrder;
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
-    } else {
-      this.salesOrderService.getAllList().subscribe(
-        (res) => {
-          console.log('Sales order list', res.data.salesOrder);
-          const arr = res.data.salesOrder.filter(
-            (us: any) => us.status === value
-          );
-          console.log('âssa', arr);
-          this.salesOrderArr = arr;
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
-    }
+    var data: any;
+    value === null
+      ? this.getAllSalesOrder()
+      : (data = this.salesOrderArr.filter((us: any) => us.status === value));
+    this.salesOrderArr = data;
   }
 }

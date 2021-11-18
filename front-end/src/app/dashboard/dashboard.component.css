@@ -39,11 +39,9 @@
   display: flex;
 }
 .container-widget {
-  width: 50%;
+  width: 100%;
   height: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding-bottom: 10%;
 }
 .detailed-widget {
   width: 75%;

@@ -91,9 +91,9 @@
 </div>
 <!-- Modal edit -->
 <nz-modal [(nzVisible)]="isVisible2" nzTitle="Modal Edit" (nzOnCancel)="handleCancel_editUser()"
-  *ngFor="let us of userArr" (nzOnOk)="submit_edit(us._id)">
+  (nzOnOk)="submit_edit(arr_edit)">
   <ng-container *nzModalContent>
-    <form nz-form [formGroup]="form" (ngSubmit)="submit_edit(us._id)">
+    <form nz-form [formGroup]="form_222" >
       <!-- Username -->
       <nz-form-item>
         <nz-form-label nzFor="username">Username</nz-form-label>
@@ -168,7 +168,7 @@
 <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel_createUser()"
   (nzOnOk)="submit()">
   <ng-container *nzModalContent>
-    <form nz-form [formGroup]="form" (ngSubmit)="submit()">
+    <form nz-form [formGroup]="form_222" (ngSubmit)="submit()">
       <!-- Username -->
       <nz-form-item>
         <nz-form-label nzFor="username">Username</nz-form-label>
