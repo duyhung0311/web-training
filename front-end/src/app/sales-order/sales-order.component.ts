@@ -371,7 +371,13 @@ export class SalesOrderComponent implements OnInit {
     var data: any;
     value === null
       ? this.getAllSalesOrder()
-      : (data = this.salesOrderArr.filter((us: any) => us.status === value));
-    this.salesOrderArr = data;
+      : this.salesOrderService.getAllList().subscribe(
+          (res) => {
+            const data = res.data.salesOrder.filter(
+              (us: any) => us.status === value
+            );
+            this.salesOrderArr = data;
+          },
+        );
   }
 }

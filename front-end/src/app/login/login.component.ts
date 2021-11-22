@@ -20,6 +20,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class LoginComponent implements OnInit {
   faLock = faLock;
   passwordVisible = false;
+  checkedLoggedIn=false;
   password?: string;
   validateForm!: FormGroup;
   form_login = new FormGroup({
@@ -55,6 +56,7 @@ export class LoginComponent implements OnInit {
       password: [null, [Validators.required]],
       remember: [true],
     });
+    console.log('checkedLoggedIn', this.checkedLoggedIn);
   }
   reloadPage(): void {
     window.location.reload();
@@ -66,9 +68,11 @@ export class LoginComponent implements OnInit {
       this.tokenStorage.saveToken(res.data.token);
       this.tokenStorage.saveUser(this.form_login.value.username);
       if ((res.status = 1)) {
+        localStorage.setItem('checkCSS','false')
+        localStorage.setItem('isLoggedIn','true')
         this.form_login.reset();
         this.message.success('Login successfully');
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['home']);
       }
       else {
         this.message.error('Login failed')

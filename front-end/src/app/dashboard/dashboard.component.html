@@ -1,24 +1,21 @@
 <div [ngSwitch]="user.isAdmin">
   <div *ngSwitchCase="false">
-    <div class="container" style="height: 100vh;">
-      <div class="left-side">
-        <app-menu></app-menu>
+    <div class="inner-topic">
+      <div class="flex-center-right-side">
+        <p>DASHBOARD</p>
       </div>
-      <div class="right-side">
-        <div class="inner-topic">
-          <div class="flex-center-right-side">
-            <p>DASHBOARD</p>
-          </div>
-          <div class="exit-icon">
-            <a nz-popconfirm nzPopconfirmTitle="Are you sure to exit this website?" nzPopconfirmPlacement="bottom"
-              style="display: flex;color:black" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">
-              <mat-icon>exit_to_app</mat-icon>
-              <p>Logout</p>
-            </a>
-          </div>
-        </div>
-        <div class="inner-widget">
-          <!-- Widget trên cùng bên trái -->
+      <div class="exit-icon">
+        <a nz-popconfirm nzPopconfirmTitle="Are you sure to exit this website?" nzPopconfirmPlacement="bottom"
+          style="display: flex;color:black" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">
+          <mat-icon>exit_to_app</mat-icon>
+          <p>Logout</p>
+        </a>
+      </div>
+    </div>
+    <div class="inner-widget" style="display: block;">
+      <!-- Widget trên cùng bên trái -->
+      <nz-tabset style="padding-left: 5%;">
+        <nz-tab nzTitle="List filtered by Lead Source">
           <div class="container-widget">
             <div class="detailed-widget">
               <nz-table #basicTable [nzData]="objectDemo">
@@ -34,14 +31,27 @@
                     <td>{{key22}}</td>
                     <td (click)="getSelectedContact2(key22)">{{handleCount(key22)}}</td>
                     <!-- <td>{{data.name}}</td>
-                    <td>{{data.age}}</td> -->
+                                                <td>{{data.age}}</td> -->
 
                   </tr>
                 </tbody>
               </nz-table>
             </div>
           </div>
-          <!-- Widget trên cùng bên phải -->
+        </nz-tab>
+        <nz-tab nzTitle="Pie chart filtered by Lead Source">
+          <div class="chart-wrapper">
+              <div class="chart-wrapper">
+                <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+                  [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend" [colors]="pieChartColors">
+                </canvas>
+              </div>
+          </div>
+        </nz-tab>
+      </nz-tabset>
+      <!-- Widget trên cùng bên phải -->
+      <nz-tabset style="padding-left: 5%;">
+        <nz-tab nzTitle="List filtered by Status">
           <div class="container-widget">
             <div class="detailed-widget">
               <nz-table #basicTable [nzData]="objectDemoNext">
@@ -61,276 +71,184 @@
               </nz-table>
             </div>
           </div>
-        </div>
-        <div [ngSwitch]="user.isAdmin">
-          <div *ngSwitchCase="false">
-            <div style="padding-bottom: 20%;"></div>
+        </nz-tab>
+        <nz-tab nzTitle="Pie chart filtered by Status">
+          <div class="chart-wrapper" *ngIf="pieChartLabels && pieChartData">
+            <canvas baseChart [data]="pieChartData_second" [labels]="pieChartLabels_second" [chartType]="pieChartType"
+              [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend"
+              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [colors]="pieChartColors">
+            </canvas>
           </div>
-          <div *ngSwitchCase="true">
-            <div class="inner-widget" style="margin-bottom:15px">
-              <!-- Widget duoi cung ben trai -->
-              <div class="container-widget position-left">
-                <div class="detailed-widget">
-                  <nz-table #basicTable [nzData]="arrCompare">
-                    <thead>
-                      <tr>
-                        <!-- <th>Lead Source</th> -->
-                        <th>Name</th>
-                        <th>Assigned To</th>
-                        <th>Created time</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let key of arrCompare">
-                        <td>{{key.contactName}}</td>
-                        <td (click)="getSelectedContact(key.assignedTo)">{{key.assignedTo}}</td>
-                        <td>{{key.createdTime}}</td>
-                      </tr>
-                    </tbody>
-                  </nz-table>
-                </div>
-              </div>
-              <!-- Widget duoi cung bên phải -->
-              <div class="container-widget ">
-                <div class="detailed-widget" style="padding-top:20px">
-                  <div [ngSwitch]="arrCompare1">
-                    <div *ngSwitchCase="false">
-                      <nz-table #basicTable [nzData]="arrCompare">
-                        <thead>
-                          <tr>
-                            <!-- <th>Lead Source</th> -->
-                            <th>Subject</th>
-                            <th>Total</th>
-                            <th>Created time</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let key of arrCompareNext" (click)="getValueSales(key)">
-                            <td>{{key.subject}}</td>
-                            <td>{{key.total}}</td>
-                            <td>{{key.createdTime}}</td>
-                          </tr>
-                        </tbody>
-                      </nz-table>
-                    </div>
-                    <div *ngSwitchCase="true">
-                      <div class="container-widgets-last" (click)="return()">
-                        <mat-icon>keyboard_backspace</mat-icon>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget ">
-                        <div class="topic-widget">Assigned To:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.assignedTo}}</div>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget">
-                        <div class="topic-widget">Contact Name:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.contactName}}</div>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget">
-                        <div class="topic-widget">Creator:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.creator}}</div>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget">
-                        <div class="topic-widget">Description:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.description}}</div>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget">
-                        <div class="topic-widget">Status:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.status}}</div>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget">
-                        <div class="topic-widget">Subject:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.subject}}</div>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget">
-                        <div class="topic-widget">Total:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.total}}</div>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget">
-                        <div class="topic-widget">Created Time:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.createdTime}}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+        </nz-tab>
+      </nz-tabset>
+
     </div>
   </div>
   <div *ngSwitchCase="true">
-    <div class="container">
-      <div class="left-side">
-        <app-menu></app-menu>
+    <div class="inner-topic">
+      <div class="flex-center-right-side">
+        <p>DASHBOARD</p>
       </div>
-      <div class="right-side">
-        <div class="inner-topic">
-          <div class="flex-center-right-side">
-            <p>DASHBOARD</p>
-          </div>
-          <div class="exit-icon">
-            <a nz-popconfirm nzPopconfirmTitle="Are you sure to exit this website?" nzPopconfirmPlacement="bottom"
-              style="display: flex;color:black" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">
-              <mat-icon>exit_to_app</mat-icon>
-              <p>Logout</p>
-            </a>
-          </div>
-        </div>
-        <div class="inner-widget" style="display: block;">
-          <!-- Widget trên cùng bên trái -->
-          <nz-tabset style="padding-left: 5%;">
-            <nz-tab nzTitle="List filtered by Lead Source">
-              <div class="container-widget">
-                <div class="detailed-widget">
-                  <nz-table #basicTable [nzData]="objectDemo">
-                    <thead>
-                      <tr>
-                        <!-- <th>Lead Source</th> -->
-                        <th>Lead Source</th>
-                        <th>Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let key22 of objectDemo,">
-                        <td>{{key22}}</td>
-                        <td (click)="getSelectedContact2(key22)">{{handleCount(key22)}}</td>
-                        <!-- <td>{{data.name}}</td>
+      <div class="exit-icon">
+        <a nz-popconfirm nzPopconfirmTitle="Are you sure to exit this website?" nzPopconfirmPlacement="bottom"
+          style="display: flex;color:black" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">
+          <mat-icon>exit_to_app</mat-icon>
+          <p>Logout</p>
+        </a>
+      </div>
+    </div>
+    <div class="inner-widget" style="display: block;">
+      <!-- Widget trên cùng bên trái -->
+      <nz-tabset style="padding-left: 5%;">
+        <nz-tab nzTitle="List filtered by Lead Source">
+          <div class="container-widget">
+            <div class="detailed-widget">
+              <nz-table #basicTable [nzData]="objectDemo">
+                <thead>
+                  <tr>
+                    <!-- <th>Lead Source</th> -->
+                    <th>Lead Source</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let key22 of objectDemo,">
+                    <td>{{key22}}</td>
+                    <td (click)="getSelectedContact2(key22)">{{handleCount(key22)}}</td>
+                    <!-- <td>{{data.name}}</td>
                             <td>{{data.age}}</td> -->
 
-                      </tr>
-                    </tbody>
-                  </nz-table>
-                </div>
-              </div>
-            </nz-tab>
-            <nz-tab nzTitle="Pie chart filtered by Lead Source">
-              <div class="chart-wrapper">
-                <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
-                  [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
-                </canvas>
-              </div>
-            </nz-tab>
-          </nz-tabset>
-
-          <!-- Widget trên cùng bên phải -->
-          <nz-tabset style="padding-left: 5%;">
-            <nz-tab nzTitle="List filtered by Status">
-                <div class="container-widget">
-                  <div class="detailed-widget">
-                    <nz-table #basicTable [nzData]="objectDemoNext">
-                      <thead>
-                        <tr>
-                          <!-- <th>Lead Source</th> -->
-                          <th>Status</th>
-                          <th>Total</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let key of objectDemoNext">
-                          <td>{{key}}</td>
-                          <td (click)="getSelectedSalesOrder(key)">{{handleCount_salesOrder(key)}}</td>
-                        </tr>
-                      </tbody>
-                    </nz-table>
-                  </div>
-                </div>
-            </nz-tab>
-            <nz-tab nzTitle="Pie chart filtered by Status">
-              <canvas baseChart [data]="pieChartData_second" [labels]="pieChartLabels_second" [chartType]="pieChartType" [options]="pieChartOptions"
-                [plugins]="pieChartPlugins" [legend]="pieChartLegend">
-              </canvas>
-            </nz-tab>
-          </nz-tabset>
-        </div>
-        <div [ngSwitch]="user.isAdmin">
-          <div *ngSwitchCase="false">
-            <div style="padding-bottom: 20%;"></div>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </div>
           </div>
-          <div *ngSwitchCase="true">
-            <div class="inner-widget" style="margin-bottom:15px;padding-left: 5%;display: block;">
-              <!-- Widget duoi cung ben trai -->
-              <div class="container-widget position-left">
-                <div class="detailed-widget">
-                  <nz-table #basicTable [nzData]="arrCompare">
+        </nz-tab>
+        <nz-tab nzTitle="Pie chart filtered by Lead Source">
+          <div class="chart-wrapper">
+            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+              [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+            </canvas>
+          </div>
+        </nz-tab>
+      </nz-tabset>
+      <!-- Widget trên cùng bên phải -->
+      <nz-tabset style="padding-left: 5%;">
+        <nz-tab nzTitle="List filtered by Status">
+          <div class="container-widget">
+            <div class="detailed-widget">
+              <nz-table #basicTable [nzData]="objectDemoNext">
+                <thead>
+                  <tr>
+                    <!-- <th>Lead Source</th> -->
+                    <th>Status</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let key of objectDemoNext">
+                    <td>{{key}}</td>
+                    <td (click)="getSelectedSalesOrder(key)">{{handleCount_salesOrder(key)}}</td>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </div>
+          </div>
+        </nz-tab>
+        <nz-tab nzTitle="Pie chart filtered by Status">
+          <canvas baseChart [data]="pieChartData_second" [labels]="pieChartLabels_second" [chartType]="pieChartType"
+            [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+          </canvas>
+        </nz-tab>
+      </nz-tabset>
+    </div>
+    <div [ngSwitch]="user.isAdmin">
+      <div *ngSwitchCase="false">
+        <div style="padding-bottom: 20%;"></div>
+      </div>
+      <div *ngSwitchCase="true">
+        <div class="inner-widget" style="margin-bottom:15px;padding-left: 5%;display: block;">
+          <!-- Widget duoi cung ben trai -->
+          <div class="container-widget position-left">
+            <div class="detailed-widget">
+              <nz-table #basicTable [nzData]="arrCompare">
+                <thead>
+                  <tr>
+                    <!-- <th>Lead Source</th> -->
+                    <th>Name</th>
+                    <th>Assigned To</th>
+                    <th>Created time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let key of basicTable.data">
+                    <td>{{key.contactName}}</td>
+                    <td (click)="getSelectedContact(key.assignedTo)">{{key.assignedTo}}</td>
+                    <td>{{key.createdTime}}</td>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </div>
+          </div>
+          <!-- Widget duoi cung bên phải -->
+          <div class="container-widget ">
+            <div class="detailed-widget" style="padding-top:20px">
+              <div [ngSwitch]="arrCompare1">
+                <div *ngSwitchCase="false">
+                  <nz-table #basicTable [nzData]="arrCompareNext">
                     <thead>
                       <tr>
                         <!-- <th>Lead Source</th> -->
-                        <th>Name</th>
-                        <th>Assigned To</th>
+                        <th>Subject</th>
+                        <th>Total</th>
                         <th>Created time</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let key of basicTable.data">
-                        <td>{{key.contactName}}</td>
-                        <td (click)="getSelectedContact(key.assignedTo)">{{key.assignedTo}}</td>
+                      <tr *ngFor="let key of arrCompareNext" (click)="getValueSales(key)">
+                        <td>{{key.subject}}</td>
+                        <td>{{key.total}}</td>
                         <td>{{key.createdTime}}</td>
                       </tr>
                     </tbody>
                   </nz-table>
                 </div>
-              </div>
-              <!-- Widget duoi cung bên phải -->
-              <div class="container-widget ">
-                <div class="detailed-widget" style="padding-top:20px">
-                  <div [ngSwitch]="arrCompare1">
-                    <div *ngSwitchCase="false">
-                      <nz-table #basicTable [nzData]="arrCompareNext">
-                        <thead>
-                          <tr>
-                            <!-- <th>Lead Source</th> -->
-                            <th>Subject</th>
-                            <th>Total</th>
-                            <th>Created time</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let key of arrCompareNext" (click)="getValueSales(key)">
-                            <td>{{key.subject}}</td>
-                            <td>{{key.total}}</td>
-                            <td>{{key.createdTime}}</td>
-                          </tr>
-                        </tbody>
-                      </nz-table>
-                    </div>
-                    <div *ngSwitchCase="true">
-                      <div class="container-widgets-last" (click)="return()">
-                        <mat-icon>keyboard_backspace</mat-icon>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget ">
-                        <div class="topic-widget">Assigned To:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.assignedTo}}</div>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget">
-                        <div class="topic-widget">Contact Name:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.contactName}}</div>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget">
-                        <div class="topic-widget">Creator:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.creator}}</div>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget">
-                        <div class="topic-widget">Description:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.description}}</div>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget">
-                        <div class="topic-widget">Status:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.status}}</div>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget">
-                        <div class="topic-widget">Subject:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.subject}}</div>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget">
-                        <div class="topic-widget">Total:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.total}}</div>
-                      </div>
-                      <div class="container-widgets-last flex-center-widget">
-                        <div class="topic-widget">Created Time:</div>
-                        <div class="detailed-last-widget">{{arrCompare2.createdTime}}</div>
-                      </div>
-                    </div>
+                <div *ngSwitchCase="true">
+                  <div class="container-widgets-last" (click)="return()">
+                    <mat-icon>keyboard_backspace</mat-icon>
+                  </div>
+                  <div class="container-widgets-last flex-center-widget ">
+                    <div class="topic-widget">Assigned To:</div>
+                    <div class="detailed-last-widget">{{arrCompare2.assignedTo}}</div>
+                  </div>
+                  <div class="container-widgets-last flex-center-widget">
+                    <div class="topic-widget">Contact Name:</div>
+                    <div class="detailed-last-widget">{{arrCompare2.contactName}}</div>
+                  </div>
+                  <div class="container-widgets-last flex-center-widget">
+                    <div class="topic-widget">Creator:</div>
+                    <div class="detailed-last-widget">{{arrCompare2.creator}}</div>
+                  </div>
+                  <div class="container-widgets-last flex-center-widget">
+                    <div class="topic-widget">Description:</div>
+                    <div class="detailed-last-widget">{{arrCompare2.description}}</div>
+                  </div>
+                  <div class="container-widgets-last flex-center-widget">
+                    <div class="topic-widget">Status:</div>
+                    <div class="detailed-last-widget">{{arrCompare2.status}}</div>
+                  </div>
+                  <div class="container-widgets-last flex-center-widget">
+                    <div class="topic-widget">Subject:</div>
+                    <div class="detailed-last-widget">{{arrCompare2.subject}}</div>
+                  </div>
+                  <div class="container-widgets-last flex-center-widget">
+                    <div class="topic-widget">Total:</div>
+                    <div class="detailed-last-widget">{{arrCompare2.total}}</div>
+                  </div>
+                  <div class="container-widgets-last flex-center-widget">
+                    <div class="topic-widget">Created Time:</div>
+                    <div class="detailed-last-widget">{{arrCompare2.createdTime}}</div>
                   </div>
                 </div>
               </div>
@@ -340,7 +258,4 @@
       </div>
     </div>
   </div>
-</div>
-<div style="background-color: lightgray;">
-  <app-footer></app-footer>
 </div>

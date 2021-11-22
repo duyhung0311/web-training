@@ -1,93 +1,85 @@
-<div class="container">
-  <div class="left-side">
-    <app-menu></app-menu>
+<div style="height: 100vh;">
+  <div class="inner-topic">
+    <div class="flex-center-right-side">
+      <p>USER PROFILE</p>
+    </div>
+    <div class="exit-icon">
+      <a nz-popconfirm nzPopconfirmTitle="Are you sure to exit this website?" nzPopconfirmPlacement="bottom"
+        style="display: flex;color:black" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">
+        <mat-icon>exit_to_app</mat-icon>
+        <p>Logout</p>
+      </a>
+    </div>
   </div>
-  <div class="right-side">
-    <div class="inner-topic">
-      <div class="flex-center-right-side">
-        <p>USER PROFILE</p>
-      </div>
-      <div class="exit-icon">
-        <a nz-popconfirm nzPopconfirmTitle="Are you sure to exit this website?" nzPopconfirmPlacement="bottom"
-          style="display: flex;color:black" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">
-          <mat-icon>exit_to_app</mat-icon>
-          <p>Logout</p>
-        </a>
-      </div>
+  <div class="inner-content">
+    <div class="flex-center-incon">
+      <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="getProfile()">
+        <!-- Username -->
+        <nz-form-item>
+          <div class="input-profile">
+            <p>Username:</p>
+            <nz-form-control nzErrorTip="Please input your username!">
+              <nz-input-group nzPrefixIcon="user">
+                <input formControlName="username" nz-input placeholder="Username" />
+              </nz-input-group>
+            </nz-form-control>
+          </div>
+        </nz-form-item>
+        <!-- Name -->
+        <nz-form-item>
+          <div class="input-profile">
+            <p>Name:</p>
+            <nz-form-control nzErrorTip="Please input your name!">
+              <nz-input-group nzPrefixIcon="user">
+                <input nz-input placeholder="Name" formControlName="name" />
+              </nz-input-group>
+            </nz-form-control>
+          </div>
+        </nz-form-item>
+        <!-- Email -->
+        <nz-form-item>
+          <div class="input-profile">
+            <p>Email:</p>
+            <nz-form-control nzErrorTip="Please input your email!">
+              <nz-input-group nzPrefix="@">
+                <input nz-input placeholder="Email" formControlName="email" />
+              </nz-input-group>
+            </nz-form-control>
+          </div>
+        </nz-form-item>
+        <!-- Phone -->
+        <nz-form-item>
+          <div class="input-profile">
+            <p>Phone:</p>
+            <nz-form-control nzErrorTip="Please input your email!">
+              <nz-input-group nzPrefixIcon="phone">
+                <input nz-input placeholder="phone" formControlName="phone" />
+              </nz-input-group>
+            </nz-form-control>
+          </div>
+        </nz-form-item>
+        <!-- Admin -->
+        <nz-form-item>
+          <div class="input-profile">
+            <p>Admin?</p>
+            <nz-radio-group formControlName="isAdmin">
+              <label nz-radio nzValue="true">True</label>
+              <label nz-radio nzValue="false">False</label>
+            </nz-radio-group>
+          </div>
+        </nz-form-item>
+        <!-- Active -->
+        <nz-form-item>
+          <div class="input-profile">
+            <p>Active?</p>
+            <nz-radio-group formControlName="isActive">
+              <label nz-radio nzValue="true">True</label>
+              <label nz-radio nzValue="false">False</label>
+            </nz-radio-group>
+          </div>
+        </nz-form-item>
+      </form>
     </div>
-    <div class="inner-content">
-      <div class="flex-center-incon">
-        <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="getProfile()" >
-          <!-- Username -->
-          <nz-form-item>
-            <div class="input-profile">
-              <p>Username:</p>
-              <nz-form-control nzErrorTip="Please input your username!">
-                <nz-input-group nzPrefixIcon="user">
-                  <input formControlName="username" nz-input placeholder="Username" />
-                </nz-input-group>
-              </nz-form-control>
-            </div>
-          </nz-form-item>
-          <!-- Name -->
-          <nz-form-item>
-            <div class="input-profile">
-              <p>Name:</p>
-              <nz-form-control nzErrorTip="Please input your name!">
-                <nz-input-group nzPrefixIcon="user">
-                  <input nz-input placeholder="Name" formControlName="name" />
-                </nz-input-group>
-              </nz-form-control>
-            </div>
-          </nz-form-item>
-          <!-- Email -->
-          <nz-form-item>
-            <div class="input-profile">
-              <p>Email:</p>
-              <nz-form-control nzErrorTip="Please input your email!">
-                <nz-input-group nzPrefix="@" >
-                  <input  nz-input placeholder="Email" formControlName="email" />
-                </nz-input-group>
-              </nz-form-control>
-            </div>
-          </nz-form-item>
-          <!-- Phone -->
-          <nz-form-item>
-            <div class="input-profile">
-              <p>Phone:</p>
-              <nz-form-control nzErrorTip="Please input your email!">
-                <nz-input-group nzPrefixIcon="phone">
-                  <input nz-input placeholder="phone" formControlName="phone" />
-                </nz-input-group>
-              </nz-form-control>
-            </div>
-          </nz-form-item>
-          <!-- Admin -->
-          <nz-form-item>
-            <div class="input-profile">
-              <p>Admin?</p>
-              <nz-radio-group formControlName="isAdmin" >
-                <label nz-radio nzValue="true">True</label>
-                <label nz-radio nzValue="false">False</label>
-              </nz-radio-group>
-            </div>
-          </nz-form-item>
-          <!-- Active -->
-          <nz-form-item>
-            <div class="input-profile">
-              <p>Active?</p>
-              <nz-radio-group formControlName="isActive">
-                <label nz-radio nzValue="true">True</label>
-                <label nz-radio nzValue="false">False</label>
-              </nz-radio-group>
-            </div>
-          </nz-form-item>
-        </form>
-      </div>
-    </div>
+  </div>
 
-  </div>
-</div>
-<div style="background-color: lightgray;">
-  <app-footer></app-footer>
 </div>
