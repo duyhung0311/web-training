@@ -46,7 +46,8 @@
       <div class="container-general" [ngSwitch]="usArr.isAdmin">
         <div *ngSwitchCase="true">
           <div class="inline-element-menu">
-            <a routerLink="/dashboard" class="container-general">
+            <a [routerLinkActive]="['active']" (click)="click()"
+             [routerLink]="['./dashboard']" class="container-general">
               <div class="icon-general">
                 <mat-icon>dashboard</mat-icon>
               </div>
@@ -56,7 +57,8 @@
             </a>
           </div>
           <div class="inline-element-menu">
-            <a routerLink="/user" class="container-general">
+            <a  [routerLinkActive]="['active']"
+             [routerLink]="['./user']" class="container-general">
               <div class="icon-general">
                 <mat-icon>supervisor_account</mat-icon>
               </div>
@@ -66,7 +68,8 @@
             </a>
           </div>
           <div class="inline-element-menu">
-            <a routerLink="/contacts" class="container-general">
+            <a [routerLinkActive]="['active']"
+             [routerLink]="['./contacts']" class="container-general">
               <div class="icon-general">
                 <mat-icon>dialer_sip</mat-icon>
               </div>
@@ -76,7 +79,8 @@
             </a>
           </div>
           <div class="inline-element-menu">
-            <a routerLink="/sales-order" class="container-general">
+            <a [routerLinkActive]="['active']"
+             [routerLink]="['./sales-order']" class="container-general">
               <div class="icon-general">
                 <mat-icon>add_shopping_cart</mat-icon>
               </div>
@@ -86,7 +90,8 @@
             </a>
           </div>
           <div class="inline-element-menu">
-            <a routerLink="/profile" class="container-general">
+            <a [routerLinkActive]="['active']"
+             [routerLink]="['./profile']" (click)="unClick()" class="container-general">
               <div class="icon-general">
                 <mat-icon>settings</mat-icon>
               </div>
@@ -96,7 +101,8 @@
             </a>
           </div>
           <div class="inline-element-menu">
-            <a routerLink="/password" class="container-general">
+            <a [routerLinkActive]="['active']"
+             [routerLink]="['./password']" class="container-general">
               <div class="icon-general">
                 <mat-icon>block</mat-icon>
               </div>
@@ -107,8 +113,9 @@
           </div>
         </div>
         <div *ngSwitchCase="false">
-          <div class="inline-element-menu">
-            <a routerLink="/dashboard" class="container-general">
+          <div class="inline-element-menu" (click)="click()">
+            <a [routerLinkActive]="['active']"
+             [routerLink]="['./dashboard']" class="container-general">
               <div class="icon-general">
                 <mat-icon>dashboard</mat-icon>
               </div>
@@ -118,7 +125,8 @@
             </a>
           </div>
           <div class="inline-element-menu">
-            <a routerLink="/contacts" class="container-general">
+            <a [routerLinkActive]="['active']"
+             [routerLink]="['./contacts']" class="container-general">
               <div class="icon-general">
                 <mat-icon>dialer_sip</mat-icon>
               </div>
@@ -128,7 +136,8 @@
             </a>
           </div>
           <div class="inline-element-menu">
-            <a routerLink="/sales-order" class="container-general">
+            <a [routerLinkActive]="['active']"
+             [routerLink]="['./sales-order']" class="container-general">
               <div class="icon-general">
                 <mat-icon>add_shopping_cart</mat-icon>
               </div>
@@ -138,7 +147,8 @@
             </a>
           </div>
           <div class="inline-element-menu">
-            <a routerLink="/profile" class="container-general">
+            <a [routerLinkActive]="['active']"
+             [routerLink]="['./profile']" class="container-general">
               <div class="icon-general">
                 <mat-icon>settings</mat-icon>
               </div>
@@ -148,7 +158,8 @@
             </a>
           </div>
           <div class="inline-element-menu">
-            <a routerLink="/password" class="container-general">
+            <a [routerLinkActive]="['active']"
+             [routerLink]="['./password']" class="container-general">
               <div class="icon-general">
                 <mat-icon>block</mat-icon>
               </div>

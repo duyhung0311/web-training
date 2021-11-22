@@ -49,6 +49,8 @@ export class AuthService {
       sessionStorage.clear();
       this.router.navigate(['login']);
     }
+    localStorage.removeItem('isLoggedIn');
+     localStorage.removeItem('isAdmin');
   }
   getUserProfile(): Observable<any> {
     let api = `${this.endpoint}/userProfile`;

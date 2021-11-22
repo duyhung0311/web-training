@@ -9,10 +9,12 @@ import { CommnunicatetionService } from 'src/services/commnunicatetion.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from 'src/model/user.model';
-import { ChartType, ChartOptions } from 'chart.js';
+import { ChartType, ChartOptions,ChartDataSets } from 'chart.js';
 import {
   SingleDataSet,
   Label,
+  MultiDataSet,
+
   monkeyPatchChartJsLegend,
   monkeyPatchChartJsTooltip,
 } from 'ng2-charts';
@@ -37,6 +39,8 @@ export class DashboardComponent implements OnInit {
   newArr_after: any[] = [];
   keyArr: any[] = [];
   valueArr: any[] = [];
+  keyArr_us: any[] = [];
+  valueArr_us: any[] = [];
   keyArrStatus: any[] = [];
   valueArrStatus: any[] = [];
   leadSrc: any;
@@ -82,12 +86,40 @@ export class DashboardComponent implements OnInit {
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
   public pieChartPlugins = [];
+  public pieChartColors: Array<any> = [
+    {
+      backgroundColor:[ '#ffa1b5','#86c7f3','#ffe29a', '#eeeff2','#93d9d9', '#c1d6e1'],
+    }
+  ];
   //pie chart p2
   public pieChartOptions_2: ChartOptions = {
     responsive: true,
   };
   public pieChartLabels_second: Label[] = this.keyArrStatus;
   public pieChartData_second: SingleDataSet = this.valueArrStatus;
+  //pie chart p3
+  // public doughnutChartLabels: Label[] = this.keyArr_us;
+  // public doughnutChartData: MultiDataSet = this.valueArr_us;
+  // public doughnutChartType: ChartType = 'doughnut';
+
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+  };
+  public barChartLabels: Label[] = this.keyArr_us;
+  public barChartType: ChartType = 'bar';
+  public barChartLegend = true;
+  public barChartPlugins = [];
+
+  public barChartData: ChartDataSets[] = this.valueArr_us;
+
+  // public pieChartLabels_third: Label[] = this.keyArr_us;
+  // public pieChartData_third: SingleDataSet = this.valueArr_us;
+  // public pieChartType_: ChartType = 'pie';
+  // public pieChartLegend_ = true;
+  // public pieChartPlugins_ = [];
+  // public pieChartOptions_: ChartOptions = {
+  //   responsive: true,
+  // };
   constructor(
     private message: NzMessageService,
     private auth: AuthService,
@@ -151,7 +183,8 @@ export class DashboardComponent implements OnInit {
             console.log(keys[j], items[keys[j]]);
             this.keyArrStatus.push(keys[j]);
             this.valueArrStatus.push(items[keys[j]]);
-            console.log(this.keyArrStatus,this.valueArrStatus)
+
+            console.log(this.keyArrStatus, this.valueArrStatus);
           }
         }
       },
@@ -189,6 +222,8 @@ export class DashboardComponent implements OnInit {
             console.log(keys[j], items[keys[j]]);
             this.keyArr.push(keys[j]);
             this.valueArr.push(items[keys[j]]);
+            this.keyArr_us.push(keys[j]);
+            this.valueArr_us.push(items[keys[j]]);
           }
         }
       },
@@ -244,19 +279,23 @@ export class DashboardComponent implements OnInit {
   }
   getSelectedContact(leadSrc: any): void {
     this.leadSrc = leadSrc;
-    this.router.navigate(['contacts'], {
+    localStorage.setItem('checkCSS', 'true');
+    this.router.navigate(['/home/contacts'], {
       queryParams: { variable: this.leadSrc },
     });
   }
   getSelectedContact2(leadSrc: any): void {
     this.leadSrc = leadSrc;
-    this.router.navigate(['contacts'], {
+    console.log(leadSrc);
+    localStorage.setItem('checkCSS', 'true');
+    this.router.navigate(['/home/contacts'], {
       queryParams: { variable2: this.leadSrc },
     });
   }
   getSelectedSalesOrder(status: SalesOrder): void {
     this.status = status;
-    this.router.navigate(['sales-order'], {
+    localStorage.setItem('checkCSS', 'true');
+    this.router.navigate(['/home/sales-order'], {
       queryParams: { status: this.status },
     });
   }
@@ -292,5 +331,13 @@ export class DashboardComponent implements OnInit {
       isActive: users.isActive?.toString(),
     });
     console.log('Value current user', this.form.value);
+  }
+  chartClicked(e: any) {
+    console.log(e);
+    console.log('=========Chart clicked============');
+  }
+  chartHovered(e: any) {
+    console.log(e);
+    console.log('=========Chart hovered============');
   }
 }

@@ -30,6 +30,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { CommnunicatetionService } from 'src/services/commnunicatetion.service';
 import { FooterComponent } from './footer/footer.component';
 import { ChartsModule } from 'ng2-charts';
+import { HomeComponent } from './home/home.component';
 
 
 registerLocaleData(en);
@@ -44,6 +45,7 @@ registerLocaleData(en);
     PasswordComponent,
     ContactsComponent,
     SalesOrderComponent,
+    HomeComponent,
     DashboardComponent,
     FooterComponent,
   ],

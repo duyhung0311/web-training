@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from 'src/model/user.model';
 import { AuthService } from '../../services/auth.service';
+import { Router,NavigationEnd  } from '@angular/router';
 import {
   faUsers,
   faUser,
@@ -15,7 +16,7 @@ import {
   styleUrls: ['./menu.component.css'],
 })
 export class MenuComponent implements OnInit {
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService, private router: Router) {}
   faUsers = faUsers;
   faUser = faUser;
   faEnvelope = faEnvelope;
@@ -53,15 +54,19 @@ export class MenuComponent implements OnInit {
   });
   ngOnInit(): void {
     this.getProfile();
+    console.log(this.router.url);
   }
   logout() {
     this.auth.doLogout();
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('isAdmin');
   }
   getProfile(): void {
     this.auth.getUserProfile().subscribe(
       (res) => {
         this.user = res.data.user;
-        this.usArr=res.data.user;
+        this.usArr = res.data.user;
+        localStorage.setItem('isAdmin', res.data.user.isAdmin);
         console.log('User Profile of menu', res.data.user);
         this.patchValue(res.data.user);
       },
@@ -81,5 +86,11 @@ export class MenuComponent implements OnInit {
       isActive: users.isActive?.toString(),
     });
     console.log('Value current user', this.form.value);
+  }
+  click(){
+        localStorage.setItem('checkCSS', 'false');
+  }
+  unClick(){
+     localStorage.setItem('checkCSS', 'true');
   }
 }
