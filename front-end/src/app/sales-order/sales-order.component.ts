@@ -9,7 +9,8 @@ import { SalesOrderService } from 'src/services/sales-order.service';
 import { UserService } from 'src/services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { ContactsService } from 'src/services/contacts.service';
-
+import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-sales-order',
   templateUrl: './sales-order.component.html',
@@ -60,6 +61,9 @@ export class SalesOrderComponent implements OnInit {
   });
   listIdSelect: string[] = [];
   isCheckAll: boolean = false;
+  valueAssignedTo$ = new BehaviorSubject('');
+  valueStatus$ = new BehaviorSubject('');
+  valueJoint$: Observable<any> = new Observable();
   constructor(
     private message: NzMessageService,
     private auth: AuthService,
@@ -85,6 +89,33 @@ export class SalesOrderComponent implements OnInit {
         this.selectStatus(params.status);
       }
     });
+
+    this.valueJoint$ = combineLatest([
+      this.valueAssignedTo$,
+      this.valueStatus$,
+    ]).pipe(
+      switchMap(([value1, value2]) => {
+        return this.filter_joint(value1, value2);
+      }),
+      map((result) => {
+        return result;
+      })
+    );
+    this.valueJoint$.subscribe((data: any) => {
+      console.log(data);
+    });
+  }
+  filter_joint(value?: string, value1?: string) {
+    return this.salesOrderService.getAllList().pipe(
+      map((res) => {
+        var data_before = res.data.salesOrder.filter(
+          (us: any) =>
+            (value ? value === us.assignedTo : true) &&
+            (value1 ? value1 === us.status : true)
+        );
+        return data_before;
+      })
+    );
   }
   cancel(): void {
     this.message.info('click cancel');
@@ -358,26 +389,29 @@ export class SalesOrderComponent implements OnInit {
       }
     );
   }
-  selectAssignedTo(value?: string): void {
-     console.log(value);
-     var data: any;
-     value === null
-       ? this.getAllSalesOrder()
-       : (data = this.salesOrderArr.filter((us: any) => us.assignedTo === value));
-     this.salesOrderArr = data;
+  selectAssignedTo(value?: any): void {
+    console.log(value);
+    this.valueAssignedTo$.next(value);
+    // var data: any;
+    // value === null
+    //   ? this.getAllSalesOrder()
+    //   : (data = this.salesOrderArr.filter(
+    //       (us: any) => us.assignedTo === value
+    //     ));
+    // this.salesOrderArr = data;
   }
   selectStatus(value: string): void {
     console.log(value);
-    var data: any;
-    value === null
-      ? this.getAllSalesOrder()
-      : this.salesOrderService.getAllList().subscribe(
-          (res) => {
-            const data = res.data.salesOrder.filter(
-              (us: any) => us.status === value
-            );
-            this.salesOrderArr = data;
-          },
-        );
+    this.valueStatus$.next(value);
+    // console.log(value);
+    // var data: any;
+    // value === null
+    //   ? this.getAllSalesOrder()
+    //   : this.salesOrderService.getAllList().subscribe((res) => {
+    //       const data = res.data.salesOrder.filter(
+    //         (us: any) => us.status === value
+    //       );
+    //       this.salesOrderArr = data;
+    //     });
   }
 }

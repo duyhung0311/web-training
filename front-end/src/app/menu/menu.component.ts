@@ -54,7 +54,6 @@ export class MenuComponent implements OnInit {
   });
   ngOnInit(): void {
     this.getProfile();
-    console.log(this.router.url);
   }
   logout() {
     this.auth.doLogout();
@@ -67,7 +66,6 @@ export class MenuComponent implements OnInit {
         this.user = res.data.user;
         this.usArr = res.data.user;
         localStorage.setItem('isAdmin', res.data.user.isAdmin);
-        console.log('User Profile of menu', res.data.user);
         this.patchValue(res.data.user);
       },
       (error: any) => {
@@ -85,12 +83,14 @@ export class MenuComponent implements OnInit {
       isAdmin: users.isAdmin?.toString(),
       isActive: users.isActive?.toString(),
     });
-    console.log('Value current user', this.form.value);
   }
   click(){
         localStorage.setItem('checkCSS', 'false');
   }
   unClick(){
      localStorage.setItem('checkCSS', 'true');
+  }
+  checkPossibility(){
+    localStorage.setItem('checkHome','true')
   }
 }

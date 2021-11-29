@@ -8,8 +8,9 @@ import { UserService } from 'src/services/user.service';
 import { ContactsService } from 'src/services/contacts.service';
 import { CommnunicatetionService } from 'src/services/commnunicatetion.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-contacts',
@@ -29,7 +30,7 @@ export class ContactsComponent implements OnInit {
   userArr: any[] = [];
   message2: string;
   userArr1 = new User();
-  contactArr: Contacts[] = [];
+  contactArr: any[] = [];
   contactArr1: Contacts[] = [];
   arr_pust: any[] = [];
   usSelectArr: any[] = [];
@@ -76,21 +77,10 @@ export class ContactsComponent implements OnInit {
     description: new FormControl('', [Validators.required]),
     search: new FormControl('', [Validators.required]),
   });
-  values$ = combineLatest([this.getAllContacts]).pipe(
-    map(([value1, value2, value3]: any) => {
-      return { value1, value2, value3 };
-    })
-
-    // map([value1, value2, value3]: any) => {
-    //   if (this.getAllContacts(value1) !== undefined) {
-    //     value1 = this.getAllContacts();
-    //   }
-    //   if (this.getAllContacts(value2) !== null)
-    //     value2 = this.getAllContacts();
-    //   if (this.getAllContacts(value3) !== null)
-    //     value3 = this.getAllContacts();
-    // }
-  );
+  valueAssignedTo$ = new BehaviorSubject('');
+  valueLeadSource$ = new BehaviorSubject('');
+  valueJoint$:Observable<any>=new Observable()
+  // valueLeadSource$: BehaviorSubject<Object> = new BehaviorSubject({});
   constructor(
     private message: NzMessageService,
     private auth: AuthService,
@@ -113,7 +103,6 @@ export class ContactsComponent implements OnInit {
     this.getAllUsers();
     this.getProfile();
     this.router.queryParams.subscribe((params) => {
-      console.log(params); // { orderby: "price" }
       this.form_select.get('selectAssignedTo')?.setValue(params.variable);
       this.var1 = params.variable;
       this.form_select.get('selectedValue12')?.setValue(params.variable2);
@@ -125,20 +114,69 @@ export class ContactsComponent implements OnInit {
         this.selectLeadSource(params.variable2);
       }
     });
-
-    // combineLatest([
-    //   this.value_search,
-    //   this.value_filerAssignedTo,
-    //   this.value_filterLeadSrc,
-    // ]).subscribe(([masterData1, masterData2, masterData3]) => {
-    //   this.value_search = masterData1;
-    //   console.log(this.value_search)
-    //   this.value_filerAssignedTo = masterData2;
-    //   this.value_filterLeadSrc = masterData3;
-    // });
+   this.valueJoint$ = combineLatest([
+      this.valueAssignedTo$,
+      this.valueLeadSource$,
+    ])
+      .pipe(
+        switchMap(([value1, value2]) => {
+          return this.filter_joint(value1, value2);
+        }),
+        map((result) => {
+          return result
+        })
+      )
+    this.valueJoint$.subscribe((data:any)=>{
+      console.log(data)
+      this.contactArr=data
+    })
   }
   // Table
-
+  // Filter two select
+  filter_joint(value?: string, value1?: string) {
+    return this.contactService.getAllList().pipe(
+      map((res) => {
+        var data_before = res.data.contacts.filter(
+          (us: any) =>
+            (value ? value === us.assignedTo : true) &&
+            (value1 ? value1 === us.leadSrc : true)
+        );
+        return data_before
+      })
+    );
+    // this.contactService.getAllList().subscribe((res) => {
+    //   var data_before = res.data.contacts.filter(
+    //     (us: any) =>
+    //       (value ? value === us.assignedTo : true) &&
+    //       (value1 ? value1 === us.leadSrc : true)
+    //     // (us: any) => us.assignedTo === value && us.leadSrc === value1
+    //   );
+    //   console.log(data_before);
+    //   this.contactArr = data_before;
+    // });
+  }
+  // Filter assignedTo
+  filter_next(value?: any) {
+    console.log(value);
+    this.contactService.getAllList().subscribe((res) => {
+      var data_before = res.data.contacts.filter(
+        (us: any) => us.assignedTo === value
+      );
+      console.log(data_before);
+      this.contactArr = data_before;
+    });
+  }
+  // Filter leadSource
+  filter(value?: any) {
+    console.log(value);
+    this.contactService.getAllList().subscribe((res) => {
+      var data_before = res.data.contacts.filter(
+        (us: any) => us.leadSrc === value
+      );
+      console.log(data_before);
+      this.contactArr = data_before;
+    });
+  }
   cancel(): void {
     this.message.info('click cancel');
   }
@@ -291,9 +329,7 @@ export class ContactsComponent implements OnInit {
     );
   }
   // Get all list
-  getAllContacts(value1?: any, value2?: any, value3?: any): void {
-    console.log(this.router2.url);
-    console.log(this.router2.url);
+  getAllContacts(value1?: []): void {
     this.contactService.getAllList().subscribe(
       (res) => {
         this.contactArr = res.data.contacts;
@@ -419,36 +455,13 @@ export class ContactsComponent implements OnInit {
     );
   }
   // Print value when press select assigned to
-  selectAssignedTo(value?: string): void {
+  selectAssignedTo(value?: any): void {
     console.log(value);
-    var data: any;
-    value === null
-      ? this.getAllContacts()
-      : // console.log( this.getAllContacts(null, value, null))
-        this.contactService.getAllList().subscribe((res) => {
-          const data = res.data.contacts.filter(
-            (us: any) => us.assignedTo === value
-          );
-          this.contactArr = data;
-        });
+    this.valueAssignedTo$.next(value);
   }
-  // Print value when press select lead source
-  selectLeadSource(value: string): void {
+  selectLeadSource(value?: any): void {
     console.log(value);
-    value === null
-      ? this.getAllContacts()
-      : this.contactService.getAllList().subscribe(
-          (res) => {
-            const data = res.data.contacts.filter(
-              (us: any) => us.leadSrc === value
-            );
-            console.log(data);
-            this.contactArr = data;
-          },
-          (error: any) => {
-            console.log(error);
-          }
-        );
+    this.valueLeadSource$.next(value);
   }
   getParamLeadSrc() {
     this.router.queryParams.subscribe((params) => {

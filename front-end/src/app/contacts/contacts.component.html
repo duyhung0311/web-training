@@ -1,4 +1,4 @@
-<div [ngSwitch]="usArr.isAdmin">
+<div [ngSwitch]="usArr.isAdmin" >
   <div *ngSwitchCase="true">
     <div class="inner-topic">
       <div class="flex-center-right-side">
@@ -15,7 +15,6 @@
     <div class="container-btn">
       <div style="display:block">
         <ng-container>
-
           <div>
             <button mat-raised-button color="primary" (click)="showModal_createUser()" class="font-text-content-btn">
               <mat-icon>add</mat-icon>
@@ -40,7 +39,7 @@
                 <nz-select nzAllowClear nzPlaceHolder="Select assigned user" class="select-assignedTo"
                   formControlName="selectAssignedTo" (ngModelChange)=" selectAssignedTo($event)">
                   <ng-container *ngFor="let us of usSelectArr">
-                    <nz-option [nzLabel]="us.username" [nzValue]="us.username" *ngIf="us.isAdmin==false">
+                    <nz-option [nzLabel]="us.username" [nzValue]="us.username" >
                       {{us.username}}
                     </nz-option>
                   </ng-container>
@@ -51,7 +50,7 @@
               <form nz-form [formGroup]="form_select">
                 <nz-select nzAllowClear nzPlaceHolder="Select lead source" class="select-assignedTo"
                   formControlName="selectedValue12" (ngModelChange)=" selectLeadSource($event)">
-                  <nz-option nzValue="Existing Customer" nzLabel="Existing Customer"></nz-option>
+                  <nz-option  nzValue="Existing Customer" nzLabel="Existing Customer"></nz-option>
                   <nz-option nzValue="Partner" nzLabel="Partner"></nz-option>
                   <nz-option nzValue="Conference" nzLabel="Conference"></nz-option>
                   <nz-option nzValue="Website" nzLabel="Website"></nz-option>
@@ -68,7 +67,8 @@
     </div>
     <div class="container-btn">
       <div [ngSwitch]="usArr.isAdmin">
-        <nz-table #rowSelectionTable [nzData]="contactArr" style="width: 65vw;">
+        <table ></table>
+        <nz-table #rowSelectionTable [nzData]="valueJoint$|async" style="width: 65vw;">
           <thead>
             <tr>
               <th *ngSwitchCase="true">
@@ -147,7 +147,7 @@
     </div>
     <div class="container-btn">
       <div [ngSwitch]="usArr.isAdmin">
-        <nz-table #rowSelectionTable [nzData]="contactArr" style="width: 65vw;">
+        <nz-table #rowSelectionTable [nzData]="valueJoint$ | async" style="width: 65vw;">
           <thead>
             <tr>
               <th>Creator</th>
@@ -309,8 +309,6 @@
     </form>
   </ng-container>
 </nz-modal>
-
-
 <!-- Modal create -->
 <nz-modal [(nzVisible)]="isVisible" nzTitle="Modal Create Contacts" (nzOnCancel)="handleCancel_createUser()"
   (nzOnOk)="submit()">
