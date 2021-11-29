@@ -97,11 +97,6 @@ export class DashboardComponent implements OnInit {
   };
   public pieChartLabels_second: Label[] = this.keyArrStatus;
   public pieChartData_second: SingleDataSet = this.valueArrStatus;
-  //pie chart p3
-  // public doughnutChartLabels: Label[] = this.keyArr_us;
-  // public doughnutChartData: MultiDataSet = this.valueArr_us;
-  // public doughnutChartType: ChartType = 'doughnut';
-
   public barChartOptions: ChartOptions = {
     responsive: true,
   };
@@ -111,15 +106,6 @@ export class DashboardComponent implements OnInit {
   public barChartPlugins = [];
 
   public barChartData: ChartDataSets[] = this.valueArr_us;
-
-  // public pieChartLabels_third: Label[] = this.keyArr_us;
-  // public pieChartData_third: SingleDataSet = this.valueArr_us;
-  // public pieChartType_: ChartType = 'pie';
-  // public pieChartLegend_ = true;
-  // public pieChartPlugins_ = [];
-  // public pieChartOptions_: ChartOptions = {
-  //   responsive: true,
-  // };
   constructor(
     private message: NzMessageService,
     private auth: AuthService,
@@ -251,7 +237,7 @@ export class DashboardComponent implements OnInit {
   }
   getAllNewContact(): void {
     var dateDemo: any;
-    dateDemo = new Date(Date.now() - 1 * 24 * 60 * 60 * 1000);
+    dateDemo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     var result = dateDemo.toISOString();
     console.log(result);
     this.contactService.getAllList().subscribe(

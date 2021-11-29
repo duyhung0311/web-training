@@ -46,7 +46,7 @@
       <div class="container-general" [ngSwitch]="usArr.isAdmin">
         <div *ngSwitchCase="true">
           <div class="inline-element-menu">
-            <a [routerLinkActive]="['active']" (click)="click()"
+            <a  [routerLinkActive]="['active']" (click)="checkPossibility()"
              [routerLink]="['./dashboard']" class="container-general">
               <div class="icon-general">
                 <mat-icon>dashboard</mat-icon>

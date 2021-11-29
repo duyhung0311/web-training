@@ -27,11 +27,11 @@ const routes: Routes = [
         path: 'user',
         component: UserComponent,
         canActivate: [RoleGuardService],
-        data: {
-          guards: [],
-            guardsRelation: 'OR',
-            fallbackUrl: '/home',
-        },
+        // data: {
+        //   guards: [],
+        //     guardsRelation: 'OR',
+        //     fallbackUrl: '/dashboard',
+        // },
       },
       { path: 'dashboard', component: DashboardComponent },
     ],

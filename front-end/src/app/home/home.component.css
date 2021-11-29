@@ -12,3 +12,45 @@
   width: 75%;
   height: auto;
 }
+
+.inner-topic {
+  width: 90%;
+  display: flex;
+  border-bottom: 1px solid gray;
+  margin-left: 5%;
+}
+.flex-center-right-side {
+  padding-top: 8%;
+  width: 88%;
+  padding-bottom: 10px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+}
+.exit-icon {
+  width: 12%;
+  padding-top: 8%;
+  font-size: 25px;
+  color: black;
+  font-family: "Montserrat", sans-serif;
+  display: flex;
+}
+.remove-border{
+  border-bottom: initial;
+  padding-top:3%;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 30px;
+}
+.remove-border-normal{
+  border-bottom: initial;
+  padding-top:3%;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 18px;
+  display: flex;
+}
+.left-content{
+  width: 4%;
+}
+.right-content{
+  width: 96%;
+}

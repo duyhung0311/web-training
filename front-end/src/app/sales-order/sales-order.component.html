@@ -73,7 +73,7 @@
     </div>
     <div class="container-btn">
       <div [ngSwitch]="usArr.isAdmin">
-        <nz-table #rowSelectionTable [nzData]="salesOrderArr">
+        <nz-table #rowSelectionTable [nzData]="valueJoint$ | async">
           <thead>
             <tr>
               <th *ngSwitchCase="true">
@@ -81,9 +81,6 @@
               </th>
               <th *ngSwitchCase="false">
               </th>
-              <!-- <th>
-                                  <label nz-checkbox (nzCheckedChange)="checkAll()" [(ngModel)]="isCheckAll"></label>
-                                </th> -->
               <th>Contact Name</th>
               <th>Status</th>
               <th>Assigned To</th>
@@ -103,10 +100,6 @@
               </td>
               <td *ngSwitchCase="false">
               </td>
-              <!-- <td>
-                                  <label nz-checkbox (ngModelChange)="checkItem(data._id, data.isCheck)"
-                                    [(ngModel)]="data.isCheck"></label>
-                                </td> -->
               <td>{{ data.contactName }}</td>
               <td>{{ data.status }}</td>
               <td>{{ data.assignedTo }}</td>
@@ -205,7 +198,7 @@
     </div>
     <div class="container-btn">
       <div [ngSwitch]="usArr.isAdmin">
-        <nz-table #rowSelectionTable [nzData]="salesOrderArr">
+        <nz-table #rowSelectionTable [nzData]="valueJoint$ | async">
           <thead>
             <tr>
               <th *ngSwitchCase="true">
@@ -213,9 +206,6 @@
               </th>
               <th *ngSwitchCase="false">
               </th>
-              <!-- <th>
-                                    <label nz-checkbox (nzCheckedChange)="checkAll()" [(ngModel)]="isCheckAll"></label>
-                                  </th> -->
               <th>Contact Name</th>
               <th>Status</th>
               <th>Assigned To</th>
@@ -235,10 +225,6 @@
               </td>
               <td *ngSwitchCase="false">
               </td>
-              <!-- <td>
-                                    <label nz-checkbox (ngModelChange)="checkItem(data._id, data.isCheck)"
-                                      [(ngModel)]="data.isCheck"></label>
-                                  </td> -->
               <td>{{ data.contactName }}</td>
               <td>{{ data.status }}</td>
               <td>{{ data.assignedTo }}</td>
