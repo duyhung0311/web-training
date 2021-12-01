@@ -9,7 +9,13 @@ import { ContactsService } from 'src/services/contacts.service';
 import { CommnunicatetionService } from 'src/services/commnunicatetion.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import {
+  map,
+  switchMap,
+  tap,
+  debounceTime,
+  distinctUntilChanged,
+} from 'rxjs/operators';
 import { ThisReceiver } from '@angular/compiler';
 
 @Component({
@@ -79,8 +85,15 @@ export class ContactsComponent implements OnInit {
   });
   valueAssignedTo$ = new BehaviorSubject('');
   valueLeadSource$ = new BehaviorSubject('');
-  valueJoint$:Observable<any>=new Observable()
+  valueContactName$ :BehaviorSubject<string> = new BehaviorSubject('')
+
+  valueJoint$: Observable<any> = new Observable();
   // valueLeadSource$: BehaviorSubject<Object> = new BehaviorSubject({});
+  // debounce input
+  public consoleMessages: string[] = [];
+  public userQuestion: string;
+  userQuestionUpdate = new Subject<string>();
+
   constructor(
     private message: NzMessageService,
     private auth: AuthService,
@@ -90,6 +103,7 @@ export class ContactsComponent implements OnInit {
     private router: ActivatedRoute,
     private router2: Router
   ) {
+    this.userQuestion = '';
     this.LeadSrc = new Contacts();
     this.Model = '';
     this.message2 = '';
@@ -114,68 +128,40 @@ export class ContactsComponent implements OnInit {
         this.selectLeadSource(params.variable2);
       }
     });
-   this.valueJoint$ = combineLatest([
+    this.valueJoint$ = combineLatest([
       this.valueAssignedTo$,
       this.valueLeadSource$,
-    ])
-      .pipe(
-        switchMap(([value1, value2]) => {
-          return this.filter_joint(value1, value2);
-        }),
-        map((result) => {
-          return result
-        })
-      )
-    this.valueJoint$.subscribe((data:any)=>{
-      console.log(data)
-      this.contactArr=data
-    })
+      this.valueContactName$
+    ]).pipe(
+      switchMap(([value1, value2,value3]) => {
+        console.log(value3)
+        return this.filter_joint(value1, value2,value3);
+      }),
+      map((result) => {
+        return result;
+      })
+    );
+    this.userQuestionUpdate
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe((value) => {
+        console.log(value);
+        this.valueContactName$.next(value)
+      });
   }
   // Table
   // Filter two select
-  filter_joint(value?: string, value1?: string) {
+  filter_joint(value?: string, value1?: string,value2?: string) {
     return this.contactService.getAllList().pipe(
       map((res) => {
         var data_before = res.data.contacts.filter(
           (us: any) =>
             (value ? value === us.assignedTo : true) &&
-            (value1 ? value1 === us.leadSrc : true)
+            (value1 ? value1 === us.leadSrc : true) &&
+            (value2 ? value2 === us.contactName : true)
         );
-        return data_before
+        return data_before;
       })
     );
-    // this.contactService.getAllList().subscribe((res) => {
-    //   var data_before = res.data.contacts.filter(
-    //     (us: any) =>
-    //       (value ? value === us.assignedTo : true) &&
-    //       (value1 ? value1 === us.leadSrc : true)
-    //     // (us: any) => us.assignedTo === value && us.leadSrc === value1
-    //   );
-    //   console.log(data_before);
-    //   this.contactArr = data_before;
-    // });
-  }
-  // Filter assignedTo
-  filter_next(value?: any) {
-    console.log(value);
-    this.contactService.getAllList().subscribe((res) => {
-      var data_before = res.data.contacts.filter(
-        (us: any) => us.assignedTo === value
-      );
-      console.log(data_before);
-      this.contactArr = data_before;
-    });
-  }
-  // Filter leadSource
-  filter(value?: any) {
-    console.log(value);
-    this.contactService.getAllList().subscribe((res) => {
-      var data_before = res.data.contacts.filter(
-        (us: any) => us.leadSrc === value
-      );
-      console.log(data_before);
-      this.contactArr = data_before;
-    });
   }
   cancel(): void {
     this.message.info('click cancel');
