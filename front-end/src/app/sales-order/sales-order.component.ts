@@ -10,7 +10,13 @@ import { UserService } from 'src/services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { ContactsService } from 'src/services/contacts.service';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import {
+  map,
+  switchMap,
+  tap,
+  debounceTime,
+  distinctUntilChanged,
+} from 'rxjs/operators';
 @Component({
   selector: 'app-sales-order',
   templateUrl: './sales-order.component.html',
@@ -64,6 +70,11 @@ export class SalesOrderComponent implements OnInit {
   valueAssignedTo$ = new BehaviorSubject('');
   valueStatus$ = new BehaviorSubject('');
   valueJoint$: Observable<any> = new Observable();
+  valueContactName$: BehaviorSubject<string> = new BehaviorSubject('');
+  // debounce input
+  public consoleMessages: string[] = [];
+  public userQuestion: string;
+  userQuestionUpdate = new Subject<string>();
   constructor(
     private message: NzMessageService,
     private auth: AuthService,
@@ -75,6 +86,7 @@ export class SalesOrderComponent implements OnInit {
   ) {
     this.Status = '';
     this.arr_edit = '';
+    this.userQuestion=''
   }
 
   ngOnInit(): void {
@@ -93,9 +105,10 @@ export class SalesOrderComponent implements OnInit {
     this.valueJoint$ = combineLatest([
       this.valueAssignedTo$,
       this.valueStatus$,
+      this.valueContactName$
     ]).pipe(
-      switchMap(([value1, value2]) => {
-        return this.filter_joint(value1, value2);
+      switchMap(([value1, value2,value3]) => {
+        return this.filter_joint(value1, value2,value3);
       }),
       map((result) => {
         return result;
@@ -104,14 +117,21 @@ export class SalesOrderComponent implements OnInit {
     this.valueJoint$.subscribe((data: any) => {
       console.log(data);
     });
+    this.userQuestionUpdate
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe((value) => {
+        console.log(value);
+        this.valueContactName$.next(value);
+      });
   }
-  filter_joint(value?: string, value1?: string) {
+  filter_joint(value1?: string, value2?: string,value3?:string) {
     return this.salesOrderService.getAllList().pipe(
       map((res) => {
         var data_before = res.data.salesOrder.filter(
           (us: any) =>
-            (value ? value === us.assignedTo : true) &&
-            (value1 ? value1 === us.status : true)
+            (value1 ? value1 === us.assignedTo : true) &&
+            (value2 ? value2 === us.status : true) &&
+            (value3 ? value3 === us.contactName : true)
         );
         return data_before;
       })

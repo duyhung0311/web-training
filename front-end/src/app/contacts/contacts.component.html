@@ -28,7 +28,7 @@
           </div>
           <div class="btn-search">
             <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" [formGroup]="form">
-              <input formControlName="search" type="text" nz-input placeholder="input search text" />
+              <input [ngModelOptions]="{standalone: true}" type="text" nz-input placeholder="input search text" [(ngModel)]="userQuestion"  name="userQuestion" id="userQuestions" (ngModelChange)="this.userQuestionUpdate.next($event)" />
             </nz-input-group>
             <ng-template #suffixIconButton>
               <button (click)="getContactName()" nz-button nzType="primary" nzSearch><i nz-icon

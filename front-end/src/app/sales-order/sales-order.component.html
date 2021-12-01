@@ -32,8 +32,8 @@
               </div>
               <div>
                 <div class="btn-search">
-                  <nz-input-group style="width: 25%;" nzSearch [nzAddOnAfter]="suffixIconButton" [formGroup]="form">
-                    <input formControlName="search" type="text" nz-input placeholder="input search text" />
+                  <nz-input-group  style="width: 25%;" nzSearch [nzAddOnAfter]="suffixIconButton" [formGroup]="form">
+                    <input  [ngModelOptions]="{standalone: true}" [(ngModel)]="userQuestion"  name="userQuestion" id="userQuestions" (ngModelChange)="this.userQuestionUpdate.next($event)"  type="text" nz-input placeholder="input search text" />
                   </nz-input-group>
                   <ng-template #suffixIconButton>
                     <button (click)="getContactName()" nz-button nzType="primary" nzSearch><i nz-icon
