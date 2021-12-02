@@ -8,13 +8,20 @@ import { UserService } from 'src/services/user.service';
 import { ContactsService } from 'src/services/contacts.service';
 import { CommnunicatetionService } from 'src/services/commnunicatetion.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  Observable,
+  Subject,
+  interval
+} from 'rxjs';
 import {
   map,
   switchMap,
   tap,
   debounceTime,
   distinctUntilChanged,
+  take,startWith
 } from 'rxjs/operators';
 import { ThisReceiver } from '@angular/compiler';
 
@@ -85,15 +92,16 @@ export class ContactsComponent implements OnInit {
   });
   valueAssignedTo$ = new BehaviorSubject('');
   valueLeadSource$ = new BehaviorSubject('');
-  valueContactName$ :BehaviorSubject<string> = new BehaviorSubject('')
+  valueContactName$: BehaviorSubject<string> = new BehaviorSubject('');
 
   valueJoint$: Observable<any> = new Observable();
+  valueContact$:Observable<any>=new Observable();
+  // valueAssignedTo$ = new BehaviorSubject('');
   // valueLeadSource$: BehaviorSubject<Object> = new BehaviorSubject({});
   // debounce input
   public consoleMessages: string[] = [];
   public userQuestion: string;
   userQuestionUpdate = new Subject<string>();
-
   constructor(
     private message: NzMessageService,
     private auth: AuthService,
@@ -131,26 +139,26 @@ export class ContactsComponent implements OnInit {
     this.valueJoint$ = combineLatest([
       this.valueAssignedTo$,
       this.valueLeadSource$,
-      this.valueContactName$
+      this.valueContactName$.pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        tap((value)=>console.log(value))
+      ),
+      interval(5000).pipe(
+        startWith('a')
+      ),
     ]).pipe(
-      switchMap(([value1, value2,value3]) => {
-        console.log(value3)
-        return this.filter_joint(value1, value2,value3);
+      tap((value)=>{
+        console.log(value[3])
       }),
-      map((result) => {
-        return result;
+      switchMap(([value1, value2, value3]) => {
+        return this.filter_joint(value1, value2, value3);
       })
     );
-    this.userQuestionUpdate
-      .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
-        console.log(value);
-        this.valueContactName$.next(value)
-      });
   }
   // Table
   // Filter two select
-  filter_joint(value?: string, value1?: string,value2?: string) {
+  filter_joint(value?: string, value1?: string, value2?: string) {
     return this.contactService.getAllList().pipe(
       map((res) => {
         var data_before = res.data.contacts.filter(

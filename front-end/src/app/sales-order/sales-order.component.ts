@@ -9,13 +9,13 @@ import { SalesOrderService } from 'src/services/sales-order.service';
 import { UserService } from 'src/services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { ContactsService } from 'src/services/contacts.service';
-import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subject,interval } from 'rxjs';
 import {
   map,
   switchMap,
   tap,
   debounceTime,
-  distinctUntilChanged,
+  distinctUntilChanged,startWith
 } from 'rxjs/operators';
 @Component({
   selector: 'app-sales-order',
@@ -86,7 +86,7 @@ export class SalesOrderComponent implements OnInit {
   ) {
     this.Status = '';
     this.arr_edit = '';
-    this.userQuestion=''
+    this.userQuestion = '';
   }
 
   ngOnInit(): void {
@@ -105,26 +105,22 @@ export class SalesOrderComponent implements OnInit {
     this.valueJoint$ = combineLatest([
       this.valueAssignedTo$,
       this.valueStatus$,
-      this.valueContactName$
+      this.valueContactName$.pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        tap((val) => console.log(val))
+      ),
+      interval(5000).pipe(
+        startWith('a')
+      )
     ]).pipe(
-      switchMap(([value1, value2,value3]) => {
-        return this.filter_joint(value1, value2,value3);
-      }),
-      map((result) => {
-        return result;
+      tap(val=>console.log(val[3])),
+      switchMap(([value1, value2, value3]) => {
+        return this.filter_joint(value1, value2, value3);
       })
     );
-    this.valueJoint$.subscribe((data: any) => {
-      console.log(data);
-    });
-    this.userQuestionUpdate
-      .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
-        console.log(value);
-        this.valueContactName$.next(value);
-      });
   }
-  filter_joint(value1?: string, value2?: string,value3?:string) {
+  filter_joint(value1?: string, value2?: string, value3?: string) {
     return this.salesOrderService.getAllList().pipe(
       map((res) => {
         var data_before = res.data.salesOrder.filter(
@@ -152,7 +148,6 @@ export class SalesOrderComponent implements OnInit {
   getAllSalesOrder(): void {
     this.salesOrderService.getAllList().subscribe(
       (res) => {
-        console.log('Sales order list', res);
         this.salesOrderArr = res.data.salesOrder;
         this.salesOrderArr = this.salesOrderArr.map((x) => ({
           isCheck: false,
